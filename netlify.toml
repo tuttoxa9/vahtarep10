@@ -1,0 +1,38 @@
+[build]
+  command = "npm run build"
+  publish = ".next"
+
+[build.environment]
+  NODE_VERSION = "18"
+  NEXT_TELEMETRY_DISABLED = "1"
+  NPM_FLAGS = "--production=false"
+  # Dummy Firebase values for build
+  NEXT_PUBLIC_FIREBASE_API_KEY = "dummy-api-key"
+  NEXT_PUBLIC_FIREBASE_PROJECT_ID = "dummy-project"
+  NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN = "dummy-project.firebaseapp.com"
+  NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET = "dummy-project.appspot.com"
+  NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID = "123456789"
+  NEXT_PUBLIC_FIREBASE_APP_ID = "1:123456789:web:abc123"
+  NEXT_PUBLIC_FIREBASE_MEASUREMENT_ID = "G-XXXXXXXXXX"
+
+[[plugins]]
+  package = "@netlify/plugin-nextjs"
+
+[functions]
+  directory = "netlify/functions"
+
+[[redirects]]
+  from = "/api/*"
+  to = "/.netlify/functions/:splat"
+  status = 200
+
+# Простое кэширование статических ресурсов
+[[headers]]
+  for = "/_next/static/*"
+  [headers.values]
+    Cache-Control = "public, max-age=31536000, immutable"
+
+[[headers]]
+  for = "/images/*"
+  [headers.values]
+    Cache-Control = "public, max-age=86400"

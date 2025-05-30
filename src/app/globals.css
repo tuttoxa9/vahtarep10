@@ -1,0 +1,286 @@
+@import url('https://fonts.googleapis.com/css2?family=Manrope:wght@200;300;400;500;600;700;800&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    /* Основная палитра (более смелая и нестандартная) */
+    --background: 210 40% 97%;
+    --foreground: 222 47% 11%;
+
+    /* Карточки с более выраженным дизайном */
+    --card: 0 0% 100%;
+    --card-foreground: 222 47% 11%;
+
+    /* Поповеры */
+    --popover: 0 0% 100%;
+    --popover-foreground: 222 47% 11%;
+
+    /* Основной и акцентный цвета (стильные и яркие) */
+    --primary: 230 50% 50%;
+    --primary-foreground: 210 40% 98%;
+
+    /* Вторичный цвет (мягкий контраст) */
+    --secondary: 210 40% 96.1%;
+    --secondary-foreground: 222 47% 11%;
+
+    /* Приглушенные элементы */
+    --muted: 210 40% 96.1%;
+    --muted-foreground: 215 16% 47%;
+
+    /* Акцентный цвет (яркий, привлекательный) */
+    --accent: 342 89% 48%;
+    --accent-foreground: 210 40% 98%;
+
+    /* Деструктивный цвет */
+    --destructive: 0 84.2% 60.2%;
+    --destructive-foreground: 210 40% 98%;
+
+    /* Границы и формы */
+    --border: 214 32% 91%;
+    --input: 214 32% 91%;
+    --ring: 230 50% 50%;
+
+    /* Радиус (более округлый, мягкий) */
+    --radius: 1rem;
+
+    /* Цвета для графиков и визуализаций */
+    --chart-1: 230 50% 50%;
+    --chart-2: 342 89% 48%;
+    --chart-3: 156 64% 40%;
+    --chart-4: 43 96% 58%;
+    --chart-5: 183 78% 46%;
+  }
+
+  .dark {
+    --background: 222 47% 11%;
+    --foreground: 210 40% 98%;
+
+    --card: 222 47% 11%;
+    --card-foreground: 210 40% 98%;
+
+    --popover: 222 47% 11%;
+    --popover-foreground: 210 40% 98%;
+
+    --primary: 230 50% 50%;
+    --primary-foreground: 210 40% 98%;
+
+    --secondary: 217 32% 17%;
+    --secondary-foreground: 210 40% 98%;
+
+    --muted: 217 32% 17%;
+    --muted-foreground: 215 20% 65%;
+
+    --accent: 342 89% 48%;
+    --accent-foreground: 210 40% 98%;
+
+    --destructive: 0 62.8% 30.6%;
+    --destructive-foreground: 210 40% 98%;
+
+    --border: 217 32% 17%;
+    --input: 217 32% 17%;
+    --ring: 230 50% 50%;
+  }
+}
+
+/* Добавляем стили для более плавной анимации переходов */
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  overflow-x: hidden; /* Предотвращает появление горизонтальной прокрутки во время анимации */
+  background-image: linear-gradient(to bottom, hsl(var(--background)), hsl(var(--background) / 0.97));
+}
+
+/* Style для контейнера анимации */
+.page-transition-container {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  min-height: 100vh;
+  overflow-x: hidden;
+  will-change: transform, opacity;
+}
+
+/* Исправление для sticky sidebar */
+.sticky-sidebar {
+  position: -webkit-sticky;
+  position: sticky;
+  top: 24px;
+  height: max-content;
+  z-index: 10;
+  display: block;
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  html {
+    scroll-behavior: smooth;
+  }
+
+  body {
+    @apply bg-background text-foreground font-manrope antialiased;
+    overflow-x: hidden;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    @apply font-manrope font-bold tracking-tight;
+  }
+
+  h1 {
+    @apply text-5xl md:text-6xl lg:text-7xl text-shadow-sm;
+  }
+
+  h2 {
+    @apply text-3xl md:text-4xl lg:text-5xl text-shadow-sm;
+  }
+
+  h3 {
+    @apply text-2xl md:text-3xl text-shadow-xs;
+  }
+
+  p {
+    @apply leading-relaxed;
+  }
+}
+
+@layer components {
+  .container-custom {
+    @apply container mx-auto px-4 sm:px-6 lg:px-8 max-w-[1400px];
+  }
+
+  .text-balance {
+    text-wrap: balance;
+  }
+
+  .card-vacancy {
+    @apply relative overflow-hidden rounded-2xl transition-all duration-300 ease-in-out
+           hover:shadow-xl shadow-lg shadow-black/10 bg-white backdrop-blur-sm
+           border border-border/30;
+  }
+
+  .parallax-section {
+    @apply relative overflow-hidden;
+  }
+
+  /* Стилизация скроллбара */
+  ::-webkit-scrollbar {
+    @apply w-2;
+  }
+
+  ::-webkit-scrollbar-track {
+    @apply bg-secondary rounded-full;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    @apply bg-primary/70 rounded-full transition-colors;
+  }
+
+  ::-webkit-scrollbar-thumb:hover {
+    @apply bg-primary;
+  }
+
+  /* Анимации для элементов */
+  .fade-in {
+    @apply opacity-0 transition-opacity duration-500 ease-in-out;
+  }
+
+  .fade-in.visible {
+    @apply opacity-100;
+  }
+
+  .slide-up {
+    @apply translate-y-10 opacity-0 transition-all duration-500 ease-in-out;
+  }
+
+  .slide-up.visible {
+    @apply translate-y-0 opacity-100;
+  }
+
+  /* Добавляем новые тени */
+  .shadow-soft {
+    @apply shadow-lg shadow-black/10;
+  }
+
+  .shadow-medium {
+    @apply shadow-xl shadow-black/15;
+  }
+
+  .shadow-strong {
+    @apply shadow-2xl shadow-black/20;
+  }
+
+  /* Текстовые тени */
+  .text-shadow-xs {
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+  }
+
+  .text-shadow-sm {
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.15);
+  }
+
+  .text-shadow {
+    text-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  }
+}
+
+/* Для поддержки параллакс эффектов и плавного скролла */
+.smooth-scroll {
+  @apply transition-all duration-1000 ease-in-out;
+}
+
+/* Глубокие карточки и кнопки */
+.btn-depth {
+  @apply relative overflow-hidden shadow-lg;
+  box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1), 0 2px 4px -1px rgba(0,0,0,0.06);
+  transition: all 0.2s ease;
+}
+
+.btn-depth:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 15px -3px rgba(0,0,0,0.1), 0 4px 6px -2px rgba(0,0,0,0.05);
+}
+
+.btn-depth:active {
+  transform: translateY(0);
+  box-shadow: 0 5px 10px -3px rgba(0,0,0,0.1), 0 2px 4px -2px rgba(0,0,0,0.05);
+}
+
+.card-depth {
+  @apply relative overflow-hidden shadow-xl;
+  box-shadow: 0 10px 15px -3px rgba(0,0,0,0.1), 0 4px 6px -2px rgba(0,0,0,0.05);
+  transition: all 0.3s ease;
+}
+
+.card-depth:hover {
+  box-shadow: 0 20px 25px -5px rgba(0,0,0,0.1), 0 10px 10px -5px rgba(0,0,0,0.04);
+}
+
+/* Фонтовый стиль с тенью */
+.text-gradient {
+  @apply bg-clip-text text-transparent bg-gradient-to-r from-primary to-accent;
+}
+
+/* Анимация для логотипа */
+@keyframes logo-flow {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+.logo-animate {
+  background-size: 400% 400%;
+  animation: logo-flow 3s ease-in-out infinite;
+}
