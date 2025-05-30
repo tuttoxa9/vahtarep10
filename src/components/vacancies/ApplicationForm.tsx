@@ -115,7 +115,22 @@ export default function ApplicationForm({ vacancyId, className }: ApplicationFor
 
       if (response.ok && result.success) {
         setSubmitted(true);
-        toast.success("Заявка успешно отправлена! Мы свяжемся с вами в ближайшее время.");
+
+        // Показываем статус операции
+        let successMessage = "Заявка успешно отправлена!";
+        if (result.debug) {
+          if (result.debug.firebaseSaved && result.debug.telegramSent) {
+            successMessage += " Данные сохранены в базе и уведомление отправлено.";
+          } else if (result.debug.firebaseSaved) {
+            successMessage += " Данные сохранены в базе.";
+          } else if (result.debug.telegramSent) {
+            successMessage += " Уведомление отправлено.";
+          } else {
+            successMessage += " Мы обработаем вашу заявку в ближайшее время.";
+          }
+        }
+
+        toast.success(successMessage);
 
         // Сбрасываем форму
         form.reset();
@@ -127,6 +142,7 @@ export default function ApplicationForm({ vacancyId, className }: ApplicationFor
         // Логируем дополнительную информацию для отладки
         console.log('Response status:', response.status);
         console.log('Response headers:', Object.fromEntries(response.headers.entries()));
+        console.log('Response body:', result);
       }
     } catch (error) {
       console.error("Error submitting application:", error);
