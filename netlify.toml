@@ -22,7 +22,10 @@
   directory = "netlify/functions"
 
 [functions."submit-application"]
-  timeout = 15
+  timeout = 10
+
+[functions."submit-application-simple"]
+  timeout = 8
 
 [[redirects]]
   from = "/api/*"

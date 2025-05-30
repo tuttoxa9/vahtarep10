@@ -59,12 +59,12 @@ export default function ApplicationForm({ vacancyId, className }: ApplicationFor
       return '/api/submit-application';
     };
 
-    // Fallback функция для попытки Firebase функции
+    // Fallback функция для упрощенной версии
     const getFallbackUrl = () => {
       if (typeof window !== 'undefined') {
         const hostname = window.location.hostname;
         if (hostname !== 'localhost' && hostname !== '127.0.0.1') {
-          return '/.netlify/functions/submit-application-firebase';
+          return '/.netlify/functions/submit-application-simple';
         }
       }
       return null;
