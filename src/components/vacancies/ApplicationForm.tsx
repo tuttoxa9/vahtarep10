@@ -59,14 +59,26 @@ export default function ApplicationForm({ vacancyId, className }: ApplicationFor
       return '/api/submit-application';
     };
 
+    // Fallback функция для попытки Firebase функции
+    const getFallbackUrl = () => {
+      if (typeof window !== 'undefined') {
+        const hostname = window.location.hostname;
+        if (hostname !== 'localhost' && hostname !== '127.0.0.1') {
+          return '/.netlify/functions/submit-application-firebase';
+        }
+      }
+      return null;
+    };
+
     const apiUrl = getApiUrl();
+    const fallbackUrl = getFallbackUrl();
 
     try {
 
       console.log('Submitting to:', apiUrl);
 
       // Отправляем заявку
-      const response = await fetch(apiUrl, {
+      let response = await fetch(apiUrl, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -79,6 +91,24 @@ export default function ApplicationForm({ vacancyId, className }: ApplicationFor
           message: data.message,
         }),
       });
+
+      // Если основная функция не работает, попробуем fallback
+      if (!response.ok && fallbackUrl) {
+        console.log('Primary function failed, trying fallback:', fallbackUrl);
+        response = await fetch(fallbackUrl, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            vacancyId,
+            applicantName: data.name,
+            applicantPhone: data.phone,
+            applicantEmail: data.email,
+            message: data.message,
+          }),
+        });
+      }
 
       const result = await response.json();
       console.log('API Response:', result);
