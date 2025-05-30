@@ -1,4 +1,5 @@
 import { type NextRequest, NextResponse } from 'next/server';
+import { submitApplication } from '@/lib/firestore';
 
 export async function OPTIONS(request: NextRequest) {
   return new NextResponse(null, {
@@ -48,19 +49,44 @@ export async function POST(request: NextRequest) {
       });
     }
 
-    // If Firebase is properly configured, you can add the real logic here
-    // For now, return success
-    return NextResponse.json({
-      success: true,
-      applicationId: 'app-id-' + Date.now(),
-      message: 'Application submitted successfully'
-    }, {
-      headers: {
-        'Access-Control-Allow-Origin': '*',
-        'Access-Control-Allow-Methods': 'POST, OPTIONS',
-        'Access-Control-Allow-Headers': 'Content-Type',
-      }
-    });
+    // Save application to Firestore
+    try {
+      const applicationId = await submitApplication({
+        vacancyId,
+        applicantName,
+        applicantPhone,
+        applicantEmail,
+        message
+      });
+
+      return NextResponse.json({
+        success: true,
+        applicationId,
+        message: 'Application submitted successfully'
+      }, {
+        headers: {
+          'Access-Control-Allow-Origin': '*',
+          'Access-Control-Allow-Methods': 'POST, OPTIONS',
+          'Access-Control-Allow-Headers': 'Content-Type',
+        }
+      });
+    } catch (firestoreError) {
+      console.error('Firestore error:', firestoreError);
+      return NextResponse.json(
+        {
+          error: 'Failed to save application to database',
+          details: firestoreError instanceof Error ? firestoreError.message : 'Unknown database error'
+        },
+        {
+          status: 500,
+          headers: {
+            'Access-Control-Allow-Origin': '*',
+            'Access-Control-Allow-Methods': 'POST, OPTIONS',
+            'Access-Control-Allow-Headers': 'Content-Type',
+          }
+        }
+      );
+    }
 
   } catch (error) {
     console.error('Error processing application:', error);

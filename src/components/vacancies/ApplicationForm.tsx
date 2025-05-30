@@ -15,7 +15,6 @@ import {
 } from "@/components/ui/form";
 import { toast } from "sonner";
 import { motion } from "framer-motion";
-import { submitApplication } from "@/lib/firestore";
 import { cn } from "@/lib/utils";
 
 interface ApplicationFormProps {
