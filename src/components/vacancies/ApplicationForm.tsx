@@ -47,9 +47,13 @@ export default function ApplicationForm({ vacancyId, className }: ApplicationFor
 
     // Определяем URL в зависимости от окружения
     const getApiUrl = () => {
-      // Для Netlify всегда используем функции
-      if (typeof window !== 'undefined' && window.location.hostname !== 'localhost') {
-        return '/.netlify/functions/submit-application';
+      // Для production всегда используем Netlify функции
+      if (typeof window !== 'undefined') {
+        const hostname = window.location.hostname;
+        // Если это Netlify деплой или любой домен кроме localhost
+        if (hostname !== 'localhost' && hostname !== '127.0.0.1') {
+          return '/.netlify/functions/submit-application';
+        }
       }
       // Для локальной разработки используем API route
       return '/api/submit-application';

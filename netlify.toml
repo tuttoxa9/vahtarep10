@@ -1,5 +1,5 @@
 [build]
-  command = "npm run build"
+  command = "bun run build"
   publish = ".next"
 
 [build.environment]
@@ -20,6 +20,9 @@
 
 [functions]
   directory = "netlify/functions"
+
+[functions."submit-application"]
+  timeout = 15
 
 [[redirects]]
   from = "/api/*"

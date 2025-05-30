@@ -1,60 +1,8 @@
+let firebaseApp;
+let firebaseDb;
+
 exports.handler = async (event, context) => {
-  // Динамические импорты для Firebase
-  const { initializeApp, getApps } = await import('firebase/app');
-  const { getFirestore, collection, addDoc, doc, getDoc, Timestamp, connectFirestoreEmulator } = await import('firebase/firestore');
-
-  // Конфигурация Firebase (используем переменные окружения)
-  const firebaseConfig = {
-    apiKey: process.env.NEXT_PUBLIC_FIREBASE_API_KEY,
-    authDomain: process.env.NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN,
-    projectId: process.env.NEXT_PUBLIC_FIREBASE_PROJECT_ID,
-    storageBucket: process.env.NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET,
-    messagingSenderId: process.env.NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID,
-    appId: process.env.NEXT_PUBLIC_FIREBASE_APP_ID
-  };
-
-  // Инициализация Firebase (избегаем повторной инициализации)
-  let app;
-  let db;
-
-  try {
-    // Проверяем, есть ли уже инициализированные приложения
-    const apps = getApps();
-    if (apps.length > 0) {
-      app = apps[0];
-    } else {
-      app = initializeApp(firebaseConfig);
-    }
-    
-    db = getFirestore(app);
-  } catch (error) {
-    console.error('Firebase initialization error:', error);
-    return {
-      statusCode: 500,
-      headers: {
-        'Access-Control-Allow-Origin': '*',
-      },
-      body: JSON.stringify({
-        error: 'Firebase initialization failed',
-        details: error.message
-      }),
-    };
-  }
-
-  // Проверяем метод запроса
-  if (event.httpMethod !== 'POST') {
-    return {
-      statusCode: 405,
-      headers: {
-        'Access-Control-Allow-Origin': '*',
-        'Access-Control-Allow-Headers': 'Content-Type',
-        'Access-Control-Allow-Methods': 'POST, OPTIONS'
-      },
-      body: JSON.stringify({ error: 'Method not allowed' }),
-    };
-  }
-
-  // Обработка CORS preflight
+  // Быстрая проверка метода
   if (event.httpMethod === 'OPTIONS') {
     return {
       statusCode: 200,
@@ -67,10 +15,58 @@ exports.handler = async (event, context) => {
     };
   }
 
+  if (event.httpMethod !== 'POST') {
+    return {
+      statusCode: 405,
+      headers: {
+        'Access-Control-Allow-Origin': '*',
+      },
+      body: JSON.stringify({ error: 'Method not allowed' }),
+    };
+  }
+
   try {
+    // Инициализация Firebase только при необходимости
+    if (!firebaseDb) {
+      const { initializeApp, getApps } = await import('firebase/app');
+      const { getFirestore, collection, addDoc, doc, getDoc, Timestamp } = await import('firebase/firestore');
+
+      const firebaseConfig = {
+        apiKey: process.env.NEXT_PUBLIC_FIREBASE_API_KEY,
+        authDomain: process.env.NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN,
+        projectId: process.env.NEXT_PUBLIC_FIREBASE_PROJECT_ID,
+        storageBucket: process.env.NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET,
+        messagingSenderId: process.env.NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID,
+        appId: process.env.NEXT_PUBLIC_FIREBASE_APP_ID
+      };
+
+      try {
+        const apps = getApps();
+        if (apps.length > 0) {
+          firebaseApp = apps[0];
+        } else {
+          firebaseApp = initializeApp(firebaseConfig);
+        }
+        firebaseDb = getFirestore(firebaseApp);
+      } catch (initError) {
+        console.error('Firebase initialization error:', initError);
+        return {
+          statusCode: 500,
+          headers: {
+            'Access-Control-Allow-Origin': '*',
+          },
+          body: JSON.stringify({
+            error: 'Database not initialized',
+            details: initError.message
+          }),
+        };
+      }
+    }
+
+    const { collection, addDoc, doc, getDoc, Timestamp } = await import('firebase/firestore');
     const { vacancyId, applicantName, applicantPhone, applicantEmail, message } = JSON.parse(event.body);
 
-    // Валидация обязательных полей
+    // Быстрая валидация
     if (!vacancyId || !applicantName || !applicantPhone) {
       return {
         statusCode: 400,
@@ -83,7 +79,7 @@ exports.handler = async (event, context) => {
       };
     }
 
-    // 1. Сохраняем заявку в Firestore
+    // Подготовка данных для сохранения
     const applicationData = {
       vacancyId: vacancyId,
       applicantName: applicantName,
@@ -94,92 +90,21 @@ exports.handler = async (event, context) => {
       status: 'new'
     };
 
-    console.log('Attempting to save to Firestore:', applicationData);
-    const docRef = await addDoc(collection(db, 'applications'), applicationData);
+    console.log('Saving application to Firestore...');
+
+    // Сохранение в Firestore с коротким timeout
+    const docRef = await addDoc(collection(firebaseDb, 'applications'), applicationData);
     const applicationId = docRef.id;
-    console.log('Successfully saved application with ID:', applicationId);
 
-    // 2. Получаем данные вакансии для отправки в Telegram
-    let vacancy = null;
-    try {
-      const vacancyDoc = await getDoc(doc(db, 'vacancies', vacancyId));
-      if (vacancyDoc.exists()) {
-        vacancy = {
-          id: vacancyDoc.id,
-          ...vacancyDoc.data()
-        };
-      }
-    } catch (vacancyError) {
-      console.error('Error fetching vacancy:', vacancyError);
-      // Продолжаем выполнение, даже если не удалось получить вакансию
-    }
+    console.log('Application saved with ID:', applicationId);
 
-    // 3. Отправляем уведомление в Telegram
-    const TELEGRAM_BOT_TOKEN = process.env.TELEGRAM_BOT_TOKEN;
-    const TELEGRAM_CHAT_ID = process.env.TELEGRAM_CHAT_ID;
+    // Асинхронная отправка в Telegram без блокировки ответа
+    setImmediate(() => {
+      sendTelegramNotification(applicationId, vacancyId, applicationData, firebaseDb)
+        .catch(error => console.error('Telegram notification failed:', error));
+    });
 
-    if (TELEGRAM_BOT_TOKEN && TELEGRAM_CHAT_ID) {
-      try {
-        // Форматируем зарплату
-        const formatSalary = (salary) => {
-          if (!salary) return 'не указана';
-          if (typeof salary === 'string') return salary;
-          if (typeof salary === 'object') {
-            const { min, max, currency = 'руб' } = salary;
-            if (!min && !max) return 'по договоренности';
-            if (!min) return `до ${max} ${currency}`;
-            if (!max) return `от ${min} ${currency}`;
-            return `${min} - ${max} ${currency}`;
-          }
-          return String(salary);
-        };
-
-        // Форматируем сообщение для Telegram
-        const telegramMessage = `🔔 *Новая заявка на вакансию!*
-
-📋 *Вакансия:* ${vacancy ? vacancy.title : 'ID: ' + vacancyId}
-${vacancy ? `🏢 *Компания:* ${vacancy.company || 'не указана'}` : ''}
-${vacancy ? `📍 *Локация:* ${vacancy.location || 'не указана'}` : ''}
-${vacancy ? `💰 *Зарплата:* ${formatSalary(vacancy.salary)}` : ''}
-
-👤 *Соискатель:*
-• Имя: ${applicantName}
-• Телефон: ${applicantPhone}
-• Email: ${applicantEmail || 'не указан'}
-• Сообщение: ${message || 'не указано'}
-
-🆔 ID заявки: ${applicationId}
-🆔 ID вакансии: ${vacancyId}
-
-⏰ Дата подачи: ${new Date().toLocaleString('ru-RU', { timeZone: 'Europe/Moscow' })}`;
-
-        // Отправляем сообщение в Telegram
-        const telegramResponse = await fetch(`https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage`, {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({
-            chat_id: TELEGRAM_CHAT_ID,
-            text: telegramMessage,
-            parse_mode: 'Markdown',
-          }),
-        });
-
-        if (!telegramResponse.ok) {
-          const errorData = await telegramResponse.text();
-          console.error('Telegram API error:', errorData);
-          // Не возвращаем ошибку, так как заявка уже сохранена в Firestore
-        }
-      } catch (telegramError) {
-        console.error('Error sending Telegram notification:', telegramError);
-        // Не возвращаем ошибку, так как заявка уже сохранена в Firestore
-      }
-    } else {
-      console.warn('Telegram credentials not configured');
-    }
-
-    // Возвращаем успешный ответ
+    // Возвращаем успешный ответ немедленно
     return {
       statusCode: 200,
       headers: {
@@ -206,3 +131,84 @@ ${vacancy ? `💰 *Зарплата:* ${formatSalary(vacancy.salary)}` : ''}
     };
   }
 };
+
+// Отдельная функция для отправки в Telegram (асинхронная)
+async function sendTelegramNotification(applicationId, vacancyId, applicationData, db) {
+  const TELEGRAM_BOT_TOKEN = process.env.TELEGRAM_BOT_TOKEN;
+  const TELEGRAM_CHAT_ID = process.env.TELEGRAM_CHAT_ID;
+
+  if (!TELEGRAM_BOT_TOKEN || !TELEGRAM_CHAT_ID) {
+    console.warn('Telegram credentials not configured');
+    return;
+  }
+
+  try {
+    const { doc, getDoc } = await import('firebase/firestore');
+
+    // Быстрое получение данных вакансии с timeout
+    let vacancy = null;
+    try {
+      const vacancyDoc = await getDoc(doc(db, 'vacancies', vacancyId));
+      if (vacancyDoc.exists()) {
+        vacancy = {
+          id: vacancyDoc.id,
+          ...vacancyDoc.data()
+        };
+      }
+    } catch (vacancyError) {
+      console.error('Error fetching vacancy:', vacancyError);
+    }
+
+    // Форматирование сообщения
+    const formatSalary = (salary) => {
+      if (!salary) return 'не указана';
+      if (typeof salary === 'string') return salary;
+      if (typeof salary === 'object') {
+        const { min, max, currency = 'руб' } = salary;
+        if (!min && !max) return 'по договоренности';
+        if (!min) return `до ${max} ${currency}`;
+        if (!max) return `от ${min} ${currency}`;
+        return `${min} - ${max} ${currency}`;
+      }
+      return String(salary);
+    };
+
+    const telegramMessage = `🔔 *Новая заявка на вакансию!*
+
+📋 *Вакансия:* ${vacancy ? vacancy.title : 'ID: ' + vacancyId}
+${vacancy ? `🏢 *Компания:* ${vacancy.company || 'не указана'}` : ''}
+${vacancy ? `📍 *Локация:* ${vacancy.location || 'не указана'}` : ''}
+${vacancy ? `💰 *Зарплата:* ${formatSalary(vacancy.salary)}` : ''}
+
+👤 *Соискатель:*
+• Имя: ${applicationData.applicantName}
+• Телефон: ${applicationData.applicantPhone}
+• Email: ${applicationData.applicantEmail || 'не указан'}
+• Сообщение: ${applicationData.message || 'не указано'}
+
+🆔 ID заявки: ${applicationId}
+🆔 ID вакансии: ${vacancyId}
+
+⏰ Дата подачи: ${new Date().toLocaleString('ru-RU', { timeZone: 'Europe/Moscow' })}`;
+
+    // Отправка в Telegram
+    const telegramResponse = await fetch(`https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        chat_id: TELEGRAM_CHAT_ID,
+        text: telegramMessage,
+        parse_mode: 'Markdown',
+      }),
+    });
+
+    if (!telegramResponse.ok) {
+      const errorData = await telegramResponse.text();
+      console.error('Telegram API error:', errorData);
+    }
+  } catch (telegramError) {
+    console.error('Error sending Telegram notification:', telegramError);
+  }
+}
