@@ -50,9 +50,9 @@ export default function ContactPage() {
                   <div>
                     <h3 className="font-semibold text-lg mb-1">Телефон</h3>
                     <p className="text-muted-foreground mb-1">Для общих вопросов:</p>
-                    <p className="text-lg font-medium">+7 (495) 123-45-67</p>
+                    <p className="text-lg font-medium">+375333198613</p>
                     <p className="text-muted-foreground mb-1 mt-2">Для соискателей:</p>
-                    <p className="text-lg font-medium">+7 (495) 765-43-21</p>
+                    <p className="text-lg font-medium">+375291565232</p>
                   </div>
                 </div>
 
@@ -77,8 +77,8 @@ export default function ContactPage() {
                     <h3 className="font-semibold text-lg mb-1">Адрес</h3>
                     <p className="text-muted-foreground mb-1">Главный офис:</p>
                     <p className="text-lg">
-                      ул. Примерная, 123, офис 45<br />
-                      Москва, Россия, 123456
+                      Могилёв, ул Лепешинского 14, цокольный этаж<br />
+                      
                     </p>
                   </div>
                 </div>
@@ -89,8 +89,8 @@ export default function ContactPage() {
                   </div>
                   <div>
                     <h3 className="font-semibold text-lg mb-1">Часы работы</h3>
-                    <p className="text-lg mb-1">Понедельник - Пятница: 9:00 - 18:00</p>
-                    <p className="text-lg">Суббота - Воскресенье: Выходной</p>
+                    <p className="text-lg mb-1">с 09 до 21 без выходных</p>
+                    <p className="text-lg"></p>
                   </div>
                 </div>
               </div>
