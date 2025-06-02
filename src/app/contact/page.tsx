@@ -49,10 +49,10 @@ export default function ContactPage() {
                   </div>
                   <div>
                     <h3 className="font-semibold text-lg mb-1">Телефон</h3>
-                    <p className="text-muted-foreground mb-1">Для общих вопросов:</p>
-                    <p className="text-lg font-medium">+375333198613</p>
-                    <p className="text-muted-foreground mb-1 mt-2">Для соискателей:</p>
+                    <p className="text-muted-foreground mb-1">Для соискателей:</p>
                     <p className="text-lg font-medium">+375291565232</p>
+                    <p className="text-muted-foreground mb-1 mt-2">Для общих вопросов:</p>
+                    <p className="text-lg font-medium">+375333198613</p>
                   </div>
                 </div>
 
@@ -62,10 +62,7 @@ export default function ContactPage() {
                   </div>
                   <div>
                     <h3 className="font-semibold text-lg mb-1">Email</h3>
-                    <p className="text-muted-foreground mb-1">Для общих вопросов:</p>
-                    <p className="text-lg font-medium">info@rabotavahtoy.ru</p>
-                    <p className="text-muted-foreground mb-1 mt-2">Для соискателей:</p>
-                    <p className="text-lg font-medium">hr@rabotavahtoy.ru</p>
+                    <p className="text-lg font-medium">vahta1.ru@gmail.com</p>
                   </div>
                 </div>
 
@@ -123,7 +120,7 @@ export default function ContactPage() {
                       <Input
                         id="email"
                         type="email"
-                        placeholder="example@mail.ru"
+                        placeholder="vahta1.ru@gmail.com"
                         required
                       />
                     </div>

@@ -287,7 +287,7 @@ export default function ApplicationForm({ vacancyId, className }: ApplicationFor
               <FormItem>
                 <FormLabel>Email (необязательно)</FormLabel>
                 <FormControl>
-                  <Input placeholder="example@mail.ru" className="shadow-sm" {...field} />
+                  <Input placeholder="vahta1.ru@gmail.com" className="shadow-sm" {...field} />
                 </FormControl>
                 <FormMessage />
               </FormItem>

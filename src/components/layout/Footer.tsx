@@ -129,6 +129,12 @@ export default function Footer() {
             <h3 className="text-lg font-bold mb-4">Контакты</h3>
             <ul className="space-y-4">
 
+                                          <li className="flex gap-3">
+                <Phone className="h-5 w-5 text-primary flex-shrink-0" />
+                <Link href="tel:+375291565232" className="text-muted-foreground hover:text-accent transition-colors">
+                  +375291565232
+                </Link>
+              </li>
               <li className="flex gap-3">
                 <Phone className="h-5 w-5 text-primary flex-shrink-0" />
                 <Link href="tel:+375333198613" className="text-muted-foreground hover:text-accent transition-colors">
@@ -137,8 +143,8 @@ export default function Footer() {
               </li>
               <li className="flex gap-3">
                 <Mail className="h-5 w-5 text-primary flex-shrink-0" />
-                <Link href="mailto:info@rabotavahtoy.ru" className="text-muted-foreground hover:text-accent transition-colors">
-                  info@rabotavahtoy.ru
+                <Link href="mailto:vahta1.ru@gmail.com" className="text-muted-foreground hover:text-accent transition-colors">
+                  vahta1.ru@gmail.com
                 </Link>
               </li>
             </ul>
