@@ -17,9 +17,9 @@ export const metadata: Metadata = {
   description:
     "Мы создали инновационное пространство для поиска работы вахтовым методом. Современный подход, лучшие предложения, надежные работодатели.",
   icons: {
-    icon: "/favicon.svg",
-    shortcut: "/favicon.svg",
-    apple: "/favicon.svg",
+    icon: "/logo2.svg",
+    shortcut: "/logo2.svg",
+    apple: "/logo2.svg",
   },
   keywords: [
     "вахта",
@@ -84,10 +84,10 @@ export default function RootLayout({
     <html lang="ru" className={manrope.variable} suppressHydrationWarning>
       <head>
         {/* Favicon */}
-        <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
-        <link rel="icon" href="/favicon.svg" sizes="any" />
-        <link rel="shortcut icon" href="/favicon.svg" />
-        <link rel="apple-touch-icon" href="/favicon.svg" sizes="180x180" />
+        <link rel="icon" href="/logo2.svg" type="image/svg+xml" />
+        <link rel="icon" href="/logo2.svg" sizes="any" />
+        <link rel="shortcut icon" href="/logo2.svg" />
+        <link rel="apple-touch-icon" href="/logo2.svg" sizes="180x180" />
         <link rel="manifest" href="/manifest.json" />
         <meta name="theme-color" content="#ff1414" />
 
