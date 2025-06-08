@@ -13,9 +13,9 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { toast } from "sonner";
-import { motion } from "framer-motion";
 import { cn } from "@/lib/utils";
 import { Phone, User, Send } from "lucide-react";
+import VacancyCarousel from "./VacancyCarousel";
 
 interface FormValues {
   name: string;
@@ -136,10 +136,7 @@ export default function HeroApplicationForm({ className }: HeroApplicationFormPr
   };
 
   return (
-    <motion.div
-      initial={{ opacity: 0, x: 20 }}
-      animate={{ opacity: 1, x: 0 }}
-      transition={{ duration: 0.6, delay: 0.3 }}
+    <div
       className={cn(
         "bg-white/95 backdrop-blur-sm rounded-3xl p-8 shadow-2xl border border-white/20",
         "max-w-md w-full",
@@ -251,6 +248,11 @@ export default function HeroApplicationForm({ className }: HeroApplicationFormPr
           </p>
         </form>
       </Form>
-    </motion.div>
+
+      {/* Карусель вакансий */}
+      <div className="mt-6">
+        <VacancyCarousel className="h-8" />
+      </div>
+    </div>
   );
 }

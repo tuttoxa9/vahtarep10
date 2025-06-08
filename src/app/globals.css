@@ -284,3 +284,17 @@ body {
   background-size: 400% 400%;
   animation: logo-flow 3s ease-in-out infinite;
 }
+
+/* Анимация для карусели вакансий */
+@keyframes scroll {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(-33.333333%);
+  }
+}
+
+.animate-scroll {
+  animation: scroll 20s linear infinite;
+}
