@@ -298,3 +298,7 @@ body {
 .animate-scroll {
   animation: scroll 20s linear infinite;
 }
+
+.animate-scroll-fast {
+  animation: scroll 12s linear infinite;
+}

@@ -37,17 +37,15 @@ export default function VacancyCarousel({ className }: VacancyCarouselProps) {
   const duplicatedVacancies = [...vacancies, ...vacancies, ...vacancies];
 
   return (
-    <div className={`${className || ''} overflow-hidden bg-gradient-to-r from-red-50 to-gray-50 rounded-xl border border-red-100`}>
-      <div className="flex animate-scroll py-3">
+    <div className={`${className || ''} overflow-hidden bg-gray-50 rounded-xl`}>
+      <div className="flex animate-scroll-fast py-3">
         {duplicatedVacancies.map((vacancy, index) => (
-          <div
+          <span
             key={`${vacancy.id}-${index}`}
-            className="flex-shrink-0 px-4 py-2 mx-2 bg-white/90 backdrop-blur-sm rounded-lg shadow-sm border border-red-100 hover:bg-white transition-colors duration-300"
+            className="flex-shrink-0 text-sm font-medium text-gray-600 whitespace-nowrap mx-6"
           >
-            <span className="text-sm font-medium text-gray-700 whitespace-nowrap">
-              {vacancy.title}
-            </span>
-          </div>
+            {vacancy.title}
+          </span>
         ))}
       </div>
     </div>
