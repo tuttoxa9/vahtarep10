@@ -251,7 +251,7 @@ export default function HeroApplicationForm({ className }: HeroApplicationFormPr
 
       {/* Карусель вакансий */}
       <div className="mt-6">
-        <VacancyCarousel className="h-8" />
+        <VacancyCarousel className="h-12" />
       </div>
     </div>
   );
