@@ -2,8 +2,8 @@ import type { Metadata } from "next";
 import PageLayout from "@/components/layout/PageLayout";
 import HeroSection from "@/components/home/HeroSection";
 import FeaturesSection from "@/components/home/FeaturesSection";
-import HowItWorksSection from "@/components/home/HowItWorksSection";
 import PopularVacanciesSection from "@/components/home/PopularVacanciesSection";
+import ReviewsSection from "@/components/home/ReviewsSection";
 import CtaSection from "@/components/home/CtaSection";
 import Footer from "@/components/layout/Footer";
 import { getPopularVacancies } from "@/lib/firestore";
@@ -33,7 +33,7 @@ export default async function HomePage() {
       <HeroSection />
       <PopularVacanciesSection vacancies={popularVacancies} />
       <FeaturesSection />
-      <HowItWorksSection />
+      <ReviewsSection />
       <CtaSection />
       <Footer />
     </PageLayout>

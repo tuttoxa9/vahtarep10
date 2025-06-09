@@ -57,3 +57,25 @@ export interface FirestoreVacancy {
   createdAt: FirebaseTimestamp;
   detailsUrl?: string; // Ссылка для кнопки "Узнать подробнее"
 }
+
+export interface Review {
+  id: string;
+  stars: number; // 1-5
+  text: string;
+  date: Date | string | FirebaseTimestamp;
+  shiftType: string;
+  approved: boolean;
+  createdAt: Date | string | FirebaseTimestamp;
+  updatedAt?: Date | string | FirebaseTimestamp;
+}
+
+export interface FirestoreReview {
+  id: string;
+  stars: number;
+  text: string;
+  date: FirebaseTimestamp;
+  shiftType: string;
+  approved: boolean;
+  createdAt: FirebaseTimestamp;
+  updatedAt?: FirebaseTimestamp;
+}
