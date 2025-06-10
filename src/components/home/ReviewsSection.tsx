@@ -5,6 +5,8 @@ import { Star, User, Calendar, Briefcase } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import type { Review } from '@/types';
 import AddReviewModal from './AddReviewModal';
+import AllReviewsModal from './AllReviewsModal';
+import { reviewsData } from '@/lib/reviewsData';
 
 interface ReviewsSectionProps {
   reviews?: Review[];
@@ -12,61 +14,24 @@ interface ReviewsSectionProps {
 }
 
 export default function ReviewsSection({ reviews: initialReviews, showAddForm = false }: ReviewsSectionProps) {
-  const [reviews, setReviews] = useState<Review[]>(initialReviews || []);
-  const [loading, setLoading] = useState(!initialReviews);
+  // Используем первые 6 отзывов для отображения на главной странице
+  const allReviews = initialReviews || reviewsData;
+  const displayedReviews = allReviews.slice(0, 6);
+
+  const [reviews, setReviews] = useState<Review[]>(displayedReviews);
+  const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
     if (!initialReviews) {
-      fetchReviews();
+      // Используем статичные данные вместо API запроса
+      setReviews(displayedReviews);
     }
   }, [initialReviews]);
 
   const fetchReviews = async () => {
-    try {
-      setLoading(true);
-      const response = await fetch('/api/reviews?limit=6');
-      if (!response.ok) {
-        throw new Error('Failed to fetch reviews');
-      }
-      const data = await response.json();
-      setReviews(data);
-    } catch (error) {
-      console.error('Error fetching reviews:', error);
-      // Показываем моковые данные если Firebase недоступен
-      const mockReviews = [
-        {
-          id: '1',
-          stars: 5,
-          text: 'Отличная вахта! Работал на строительстве жилого комплекса. Зарплату выплачивали вовремя, условия проживания хорошие.',
-          shiftType: 'Строительство в Москве',
-          date: new Date('2024-11-15'),
-          approved: true,
-          createdAt: new Date('2024-11-15')
-        },
-        {
-          id: '2',
-          stars: 4,
-          text: 'Работал монтажником на нефтяной вахте в Сибири. Зарплата хорошая, но работа тяжелая.',
-          shiftType: 'Нефтяная вахта в Сибири',
-          date: new Date('2024-10-28'),
-          approved: true,
-          createdAt: new Date('2024-10-28')
-        },
-        {
-          id: '3',
-          stars: 5,
-          text: 'Супер опыт! Работал сварщиком на заводе. Отличная организация, все четко по расписанию.',
-          shiftType: 'Сварочные работы на заводе',
-          date: new Date('2024-12-01'),
-          approved: true,
-          createdAt: new Date('2024-12-01')
-        }
-      ];
-      setReviews(mockReviews);
-    } finally {
-      setLoading(false);
-    }
+    // Для совместимости с AddReviewModal - обновляем отзывы
+    setReviews(reviewsData.slice(0, 6));
   };
 
   const renderStars = (rating: number) => {
@@ -210,26 +175,27 @@ export default function ReviewsSection({ reviews: initialReviews, showAddForm = 
           ))}
         </div>
 
-        {/* Статистика и кнопка добавления */}
+        {/* Статистика и кнопки */}
         <div className="mt-12 text-center space-y-6">
           {reviews.length > 0 && (
             <div className="inline-flex items-center space-x-6 bg-white rounded-full px-8 py-4 shadow-lg">
               <div className="text-center">
                 <div className="text-2xl font-bold text-primary">
-                  {(reviews.reduce((sum, review) => sum + review.stars, 0) / reviews.length).toFixed(1)}
+                  {(allReviews.reduce((sum, review) => sum + review.stars, 0) / allReviews.length).toFixed(1)}
                 </div>
                 <div className="text-sm text-gray-600">Средняя оценка</div>
               </div>
               <div className="w-px h-8 bg-gray-200"></div>
               <div className="text-center">
-                <div className="text-2xl font-bold text-primary">{reviews.length}+</div>
+                <div className="text-2xl font-bold text-primary">{allReviews.length}</div>
                 <div className="text-sm text-gray-600">Отзывов</div>
               </div>
             </div>
           )}
 
-          {/* Кнопка добавления отзыва */}
-          <div>
+          {/* Кнопки */}
+          <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
+            <AllReviewsModal reviews={allReviews} />
             <AddReviewModal onSuccess={fetchReviews} />
           </div>
         </div>
