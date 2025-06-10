@@ -11,7 +11,8 @@ import {
   ChevronRightIcon,
   ChevronLeftIcon,
   MenuIcon,
-  PhoneIcon
+  PhoneIcon,
+  BuildingIcon
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Logo } from "@/components/ui/Logo";
@@ -41,6 +42,11 @@ export default function SideNav() {
       href: "/vacancies",
       icon: <BriefcaseIcon className="h-6 w-6" />,
       section: "popular-vacancies"
+    },
+    {
+      label: "Работодателям",
+      href: "/employers",
+      icon: <BuildingIcon className="h-6 w-6" />
     },
     {
       label: "О нас",
