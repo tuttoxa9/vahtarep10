@@ -24,6 +24,7 @@ import { toast } from '@/hooks/use-toast';
 import PageLayout from '@/components/layout/PageLayout';
 import SplitText from '@/components/ui/SplitText';
 import CountUp from '@/components/ui/CountUp';
+import { WavyBackground } from '@/components/ui/WavyBackground';
 
 export default function EmployersPageClient() {
   const [isFormSubmitting, setIsFormSubmitting] = useState(false);
@@ -131,11 +132,26 @@ export default function EmployersPageClient() {
 
   return (
     <PageLayout>
-      <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-purple-50">
-
-        {/* Hero Section */}
-        <section className="relative z-10 pt-20 pb-16 px-4 md:px-6 lg:px-8">
-          <div className="container mx-auto">
+      <div className="min-h-screen">
+        {/* Hero Section with Wavy Background */}
+        <WavyBackground
+          className="relative z-10"
+          containerClassName="relative overflow-hidden bg-gradient-to-br from-blue-50 via-white to-purple-50"
+          colors={[
+            "#3b82f6",
+            "#6366f1",
+            "#8b5cf6",
+            "#a855f7",
+            "#06b6d4",
+          ]}
+          waveWidth={70}
+          backgroundFill="#f8fafc"
+          blur={15}
+          speed="slow"
+          waveOpacity={0.3}
+        >
+          <section className="pt-20 pb-16 px-4 md:px-6 lg:px-8">
+            <div className="container mx-auto">
             <motion.div
               initial={{ opacity: 0, y: 30 }}
               animate={{ opacity: 1, y: 0 }}
@@ -210,11 +226,12 @@ export default function EmployersPageClient() {
                 </div>
               ))}
             </motion.div>
-          </div>
-        </section>
+            </div>
+          </section>
+        </WavyBackground>
 
         {/* Benefits Section */}
-        <section className="py-20 bg-white">
+        <section className="py-20 bg-white relative z-20">
           <div className="container mx-auto px-4 md:px-6 lg:px-8">
             <motion.div
               initial={{ opacity: 0, y: 30 }}
@@ -262,7 +279,7 @@ export default function EmployersPageClient() {
 
 
         {/* Contact Form Section */}
-        <section id="contact-form" className="py-20 bg-white">
+        <section id="contact-form" className="py-20 bg-white relative z-20">
           <div className="container mx-auto px-4 md:px-6 lg:px-8">
             <div className="max-w-4xl mx-auto">
               <motion.div
@@ -424,7 +441,7 @@ export default function EmployersPageClient() {
         </section>
 
         {/* CTA Section */}
-        <section className="py-20 bg-gradient-to-r from-blue-600 to-purple-600 text-white">
+        <section className="py-20 bg-gradient-to-r from-blue-600 to-purple-600 text-white relative z-20">
           <div className="container mx-auto px-4 md:px-6 lg:px-8 text-center">
             <motion.div
               initial={{ opacity: 0, y: 30 }}
