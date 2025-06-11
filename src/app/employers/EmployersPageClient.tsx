@@ -22,7 +22,7 @@ import { Textarea } from '@/components/ui/textarea';
 import { Label } from '@/components/ui/label';
 import { toast } from '@/hooks/use-toast';
 import PageLayout from '@/components/layout/PageLayout';
-import Aurora from '@/components/ui/Aurora';
+import Silk from '@/components/ui/Silk';
 
 export default function EmployersPageClient() {
   const [isFormSubmitting, setIsFormSubmitting] = useState(false);
@@ -116,13 +116,14 @@ export default function EmployersPageClient() {
   return (
     <PageLayout>
       <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-purple-50">
-        {/* Aurora Background */}
-        <div className="fixed top-0 left-0 w-full h-screen z-0 pointer-events-none">
-          <Aurora
-            colorStops={["#E6F3FF", "#F0F8FF", "#E6F3FF"]}
-            amplitude={0.3}
-            blend={0.05}
-            speed={0.2}
+        {/* Silk Background */}
+        <div className="fixed top-0 left-0 w-full h-screen z-0 pointer-events-none opacity-20">
+          <Silk
+            color="#FFFFE0"
+            speed={2}
+            scale={0.8}
+            noiseIntensity={0.5}
+            rotation={0}
           />
         </div>
 
