@@ -91,18 +91,18 @@ export default function EmployersPageClient() {
   const benefits = [
     {
       icon: <Users className="h-8 w-8 text-blue-600" />,
-      title: "Проверенные кандидаты",
-      description: "Более 5 000 готовых к работе специалистов"
+      title: "Размещение - бесплатно",
+      description: "Публикуйте ваши вакансии без оплаты. Начните поиск сотрудников прямо сейчас без первоначальных вложений"
     },
     {
-      icon: <Clock className="h-8 w-8 text-green-600" />,
-      title: "Быстрый подбор",
-      description: "Находим кандидатов за 24 часа"
+      icon: <TrendingUp className="h-8 w-8 text-green-600" />,
+      title: "Реклама и продвижение - наша забота",
+      description: "Мы берем на себя всю работу по привлечению кандидатов к вашим вакансиям и обеспечиваем максимальную видимость"
     },
     {
-      icon: <Shield className="h-8 w-8 text-purple-600" />,
-      title: "Гарантия качества",
-      description: "Замена кандидата при несоответствии"
+      icon: <Zap className="h-8 w-8 text-purple-600" />,
+      title: "Быстрые отклики в первые сутки",
+      description: "Получайте заинтересованные отклики от соискателей уже в течение первых 24 часов после публикации вакансии"
     }
   ];
 
@@ -208,7 +208,7 @@ export default function EmployersPageClient() {
               className="text-center mb-16"
             >
               <h2 className="text-3xl md:text-5xl font-bold text-gray-900 mb-6">
-                Почему выбирают нас
+                Ваши выгоды от сотрудничества
               </h2>
               <p className="text-xl text-gray-600 max-w-3xl mx-auto">
                 Мы предлагаем комплексные решения для поиска и найма вахтовых работников
@@ -421,7 +421,7 @@ export default function EmployersPageClient() {
                 Начните экономить уже сегодня
               </h2>
               <p className="text-xl mb-8 max-w-3xl mx-auto opacity-90">
-                Присоединяйтесь к сотням довольных работодателей, которые нашли у нас надежных партнеров
+                Присоединяйтесь к довольным работодателям, которые нашли у нас надежных партнеров
               </p>
               <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
                 <Button
