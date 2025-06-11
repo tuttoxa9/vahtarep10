@@ -22,7 +22,8 @@ import { Textarea } from '@/components/ui/textarea';
 import { Label } from '@/components/ui/label';
 import { toast } from '@/hooks/use-toast';
 import PageLayout from '@/components/layout/PageLayout';
-import Silk from '@/components/ui/Silk';
+import SplitText from '@/components/ui/SplitText';
+import CountUp from '@/components/ui/CountUp';
 
 export default function EmployersPageClient() {
   const [isFormSubmitting, setIsFormSubmitting] = useState(false);
@@ -108,24 +109,14 @@ export default function EmployersPageClient() {
 
 
   const stats = [
-    { number: "5 000+", label: "Проверенных работников" },
-    { number: "200+", label: "Довольных работодателей" },
-    { number: "24 часа", label: "Время подбора" }
+    { number: 750, label: "Проверенных работников", suffix: "+" },
+    { number: 30, label: "Довольных работодателей", suffix: "+" },
+    { text: "24 часа", label: "Время подбора" }
   ];
 
   return (
     <PageLayout>
       <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-purple-50">
-        {/* Silk Background */}
-        <div className="fixed top-0 left-0 w-full h-screen z-0 pointer-events-none opacity-20">
-          <Silk
-            color="#FFFFE0"
-            speed={2}
-            scale={0.8}
-            noiseIntensity={0.5}
-            rotation={0}
-          />
-        </div>
 
         {/* Hero Section */}
         <section className="relative z-10 pt-20 pb-16 px-4 md:px-6 lg:px-8">
@@ -140,24 +131,41 @@ export default function EmployersPageClient() {
                 <Building className="h-4 w-4 mr-2" />
                 Специальные условия для работодателей
               </div>
-              <h1 className="text-4xl md:text-6xl font-bold text-gray-900 mb-6 leading-tight">
-                Найдите{" "}
-                <span className="bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
-                  идеальных
-                </span>{" "}
-                вахтовых работников
+              <h1 className="text-4xl md:text-6xl font-bold mb-6 leading-tight text-gray-900">
+                <SplitText
+                  text="Быстрый поиск"
+                  className="text-4xl md:text-6xl font-bold"
+                  splitType="words"
+                  delay={50}
+                  duration={0.8}
+                />
+                {" "}
+                <span className="text-blue-600">
+                  <SplitText
+                    text="ваших работников"
+                    className="text-4xl md:text-6xl font-bold"
+                    splitType="words"
+                    delay={80}
+                    duration={0.8}
+                  />
+                </span>
               </h1>
-              <p className="text-xl md:text-2xl text-gray-600 max-w-3xl mx-auto mb-8">
-                Быстрый подбор квалифицированного персонала для ваших проектов.
-                Выгодные условия, гарантии качества и полное сопровождение.
-              </p>
+              <div className="text-xl md:text-2xl text-gray-600 max-w-3xl mx-auto mb-8">
+                <SplitText
+                  text="Быстрый подбор квалифицированного персонала для ваших проектов. Выгодные условия, гарантии качества и полное сопровождение."
+                  className="text-xl md:text-2xl text-gray-600"
+                  splitType="words"
+                  delay={30}
+                  duration={0.6}
+                  threshold={0.2}
+                />
+              </div>
               <div className="flex flex-col sm:flex-row gap-4 justify-center">
                 <Button
                   size="lg"
                   className="bg-blue-600 hover:bg-blue-700 text-white px-8 py-4"
                   onClick={scrollToForm}
                 >
-                  <Phone className="h-5 w-5 mr-2" />
                   Получить консультацию
                 </Button>
               </div>
@@ -173,7 +181,14 @@ export default function EmployersPageClient() {
               {stats.map((stat, index) => (
                 <div key={index} className="text-center">
                   <div className="text-3xl md:text-4xl font-bold text-blue-600 mb-2">
-                    {stat.number}
+                    {stat.number ? (
+                      <>
+                        <CountUp to={stat.number} duration={2} delay={0.5} />
+                        {stat.suffix}
+                      </>
+                    ) : (
+                      stat.text
+                    )}
                   </div>
                   <div className="text-gray-600">{stat.label}</div>
                 </div>
@@ -414,11 +429,10 @@ export default function EmployersPageClient() {
                   className="bg-white text-blue-600 hover:bg-gray-100"
                   onClick={scrollToForm}
                 >
-                  <Phone className="h-5 w-5 mr-2" />
                   Получить консультацию
                 </Button>
                 <div className="text-white text-xl font-semibold">
-                  📞 +375291565232
+                  +375291565232
                 </div>
               </div>
             </motion.div>
