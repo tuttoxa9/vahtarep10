@@ -131,8 +131,11 @@ export const WavyBackground = ({
         containerClassName
       )}
     >
+      {/* Gradient background behind waves */}
+      <div className="absolute inset-0 bg-gradient-to-br from-blue-100/40 via-sky-50/30 to-blue-200/50 z-0"></div>
+
       <canvas
-        className="absolute inset-0 z-0 w-full h-full"
+        className="absolute inset-0 z-[1] w-full h-full"
         ref={canvasRef}
         id="canvas"
         style={{

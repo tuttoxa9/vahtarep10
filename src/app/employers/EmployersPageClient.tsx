@@ -136,7 +136,7 @@ export default function EmployersPageClient() {
         {/* Hero Section with Wavy Background */}
         <WavyBackground
           className="relative z-10"
-          containerClassName="relative overflow-hidden bg-gradient-to-br from-blue-50 via-white to-purple-50"
+          containerClassName="relative overflow-hidden"
           colors={[
             "#3b82f6",
             "#6366f1",
