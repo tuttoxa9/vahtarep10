@@ -59,28 +59,43 @@ export default function EmployersPageClient() {
     setIsFormSubmitting(true);
 
     try {
-      // Здесь будет API запрос
-      await new Promise(resolve => setTimeout(resolve, 1000));
+      console.log('Отправка заявки работодателя:', formData);
 
-      toast({
-        title: "Заявка отправлена!",
-        description: "Мы свяжемся с вами в течение 2 часов для обсуждения условий сотрудничества.",
+      const response = await fetch('/.netlify/functions/submit-employer-application', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(formData)
       });
 
-      setFormData({
-        companyName: '',
-        contactPerson: '',
-        phone: '',
-        email: '',
-        workersNeeded: '',
-        workType: '',
-        location: '',
-        message: ''
-      });
+      const result = await response.json();
+      console.log('Ответ от функции:', result);
+
+      if (response.ok && result.success) {
+        toast({
+          title: "Заявка отправлена!",
+          description: result.message || "Мы свяжемся с вами в течение 2 часов для обсуждения условий сотрудничества.",
+        });
+
+        setFormData({
+          companyName: '',
+          contactPerson: '',
+          phone: '',
+          email: '',
+          workersNeeded: '',
+          workType: '',
+          location: '',
+          message: ''
+        });
+      } else {
+        throw new Error(result.error || 'Не удалось отправить заявку');
+      }
     } catch (error) {
+      console.error('Ошибка отправки заявки:', error);
       toast({
         title: "Ошибка",
-        description: "Не удалось отправить заявку. Попробуйте еще раз.",
+        description: error instanceof Error ? error.message : "Не удалось отправить заявку. Попробуйте еще раз.",
         variant: "destructive",
       });
     } finally {
@@ -315,7 +330,6 @@ export default function EmployersPageClient() {
                             value={formData.phone}
                             onChange={handleInputChange}
                             required
-                            placeholder="+7 (999) 123-45-67"
                           />
                         </div>
                         <div>

@@ -27,6 +27,9 @@
 [functions."submit-application-simple"]
   timeout = 8
 
+[functions."submit-employer-application"]
+  timeout = 10
+
 [[redirects]]
   from = "/api/*"
   to = "/.netlify/functions/:splat"
