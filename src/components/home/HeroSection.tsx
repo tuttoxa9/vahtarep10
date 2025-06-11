@@ -85,7 +85,7 @@ export default function HeroSection() {
                 <div className="mb-2 md:mb-6">
                   <h1 className="text-2xl md:text-5xl lg:text-6xl xl:text-7xl font-bold text-white leading-tight md:leading-[1.1] tracking-tight">
                     <span className="block">Найди свою</span>
-                    <span className="block text-red-500">идеальную работу</span>
+                    <span className="block text-red-600">идеальную работу</span>
                     <span className="block">вахтовым методом</span>
                   </h1>
                 </div>

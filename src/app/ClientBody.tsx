@@ -10,7 +10,8 @@ import {
   HomeIcon,
   BriefcaseIcon,
   InfoIcon,
-  PhoneIcon
+  PhoneIcon,
+  BuildingIcon
 } from "lucide-react";
 
 export default function ClientBody({
@@ -28,6 +29,11 @@ export default function ClientBody({
       href: "/",
       icon: <HomeIcon className="h-6 w-6" />,
       section: "hero-section"
+    },
+    {
+      label: "Работодателям",
+      href: "/employers",
+      icon: <BuildingIcon className="h-6 w-6" />
     },
     {
       label: "Вакансии",

@@ -29,6 +29,7 @@ export default function SideNav() {
   const [isExpanded, setIsExpanded] = useState(false);
   const [isFullscreenMenuOpen, setIsFullscreenMenuOpen] = useState(false);
   const [activeSection, setActiveSection] = useState<string>("");
+  const [hoverTimeout, setHoverTimeout] = useState<NodeJS.Timeout | null>(null);
 
   const navItems: NavItem[] = [
     {
@@ -91,8 +92,35 @@ export default function SideNav() {
     };
   }, [pathname]);
 
-  const toggleSideNav = () => {
-    setIsExpanded(!isExpanded);
+  // Очистка timeout при размонтировании компонента
+  useEffect(() => {
+    return () => {
+      if (hoverTimeout) {
+        clearTimeout(hoverTimeout);
+      }
+    };
+  }, [hoverTimeout]);
+
+  const handleMouseEnter = () => {
+    if (hoverTimeout) {
+      clearTimeout(hoverTimeout);
+      setHoverTimeout(null);
+    }
+    const timeout = setTimeout(() => {
+      setIsExpanded(true);
+    }, 150); // Небольшая задержка перед открытием
+    setHoverTimeout(timeout);
+  };
+
+  const handleMouseLeave = () => {
+    if (hoverTimeout) {
+      clearTimeout(hoverTimeout);
+      setHoverTimeout(null);
+    }
+    const timeout = setTimeout(() => {
+      setIsExpanded(false);
+    }, 300); // Задержка перед закрытием
+    setHoverTimeout(timeout);
   };
 
   const toggleFullscreenMenu = () => {
@@ -147,23 +175,25 @@ export default function SideNav() {
 
   return (
     <>
-      {/* Блюр фона при открытом меню */}
-      {isExpanded && (
-        <div
-          className="fixed inset-0 bg-black/20 backdrop-blur-sm z-[9998]"
-          onClick={toggleSideNav}
-        />
-      )}
-
       {/* Боковая навигация - видима только на десктопе */}
       <nav
         className={cn(
-          "fixed left-0 top-0 h-full bg-white/90 backdrop-blur-md border-r border-border/50 z-[9999] p-4 shadow-xl shadow-black/5 flex flex-col",
+          "fixed left-0 top-0 h-full bg-white/90 backdrop-blur-md border-r border-border/50 z-[9999] p-4 shadow-xl shadow-black/5 flex flex-col transition-all duration-300 ease-in-out",
           isExpanded ? "w-64" : "w-20"
         )}
+        onMouseEnter={handleMouseEnter}
+        onMouseLeave={handleMouseLeave}
       >
-        <div className="flex justify-center items-center mb-8 mt-4">
+        <div className="flex flex-col justify-center items-center mb-8 mt-4">
           <Logo />
+          <span
+            className={cn(
+              "text-sm font-medium text-foreground/60 transition-all duration-300 whitespace-nowrap mt-2",
+              isExpanded ? "opacity-100 translate-y-0" : "opacity-0 -translate-y-2 h-0 overflow-hidden"
+            )}
+          >
+            vahta1.ru
+          </span>
         </div>
 
         <div className="flex flex-col gap-4 mt-6 flex-grow">
@@ -180,34 +210,26 @@ export default function SideNav() {
               )}
             >
               <span className="flex-shrink-0">{item.icon}</span>
-              {isExpanded && (
-                <span className="text-base font-medium">
-                  {item.label}
-                </span>
-              )}
+              <span
+                className={cn(
+                  "text-base font-medium transition-all duration-300 whitespace-nowrap",
+                  isExpanded ? "opacity-100 translate-x-0" : "opacity-0 -translate-x-2 w-0 overflow-hidden"
+                )}
+              >
+                {item.label}
+              </span>
             </Link>
           ))}
         </div>
 
-        {/* Кнопка переключения состояния боковой панели - перемещена вниз */}
-        <div className="flex justify-center mt-auto mb-2 w-full">
-          <button
-            onClick={toggleSideNav}
-            className="btn-depth w-full p-2 rounded-lg hover:bg-accent/10 text-accent flex items-center justify-center gap-2 border border-accent/10"
-            aria-label={isExpanded ? "Свернуть меню" : "Развернуть меню"}
-          >
-            {isExpanded ? (
-              <>
-                <ChevronLeftIcon className="h-5 w-5" />
-                <span>
-                  Свернуть
-                </span>
-              </>
-            ) : (
-              <ChevronRightIcon className="h-5 w-5" />
-            )}
-          </button>
-        </div>
+        {/* Подсказка для наведения */}
+        {!isExpanded && (
+          <div className="flex justify-center mt-auto mb-2 w-full">
+            <div className="p-2 rounded-lg text-foreground/40 flex items-center justify-center">
+              <ChevronRightIcon className="h-4 w-4 animate-pulse" />
+            </div>
+          </div>
+        )}
       </nav>
     </>
   );
