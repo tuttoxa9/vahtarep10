@@ -182,10 +182,10 @@ export default function EmployersPageClient() {
                   />
                 </div>
               </h1>
-              <div className="text-xl md:text-2xl text-gray-600 max-w-3xl mx-auto mb-8">
+              <div className="text-xl md:text-2xl text-gray-800 max-w-3xl mx-auto mb-8">
                 <SplitText
                   text="Быстрый подбор квалифицированного персонала для ваших проектов. Выгодные условия, гарантии качества и полное сопровождение."
-                  className="text-xl md:text-2xl text-gray-600"
+                  className="text-xl md:text-2xl text-gray-800"
                   splitType="words"
                   delay={30}
                   duration={0.6}
