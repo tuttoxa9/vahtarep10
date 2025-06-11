@@ -8,8 +8,16 @@ import { Input } from "@/components/ui/input";
 import { Mail, Phone, MapPin, Clock } from "lucide-react";
 
 export const metadata: Metadata = {
-  title: "Контакты | Работа Вахтой: Новый Взгляд",
+  title: "Контакты | Работа Вахтой: для граждан РФ и РБ",
   description: "Свяжитесь с нами по вопросам вакансий вахтовым методом. Наши специалисты готовы ответить на все ваши вопросы и помочь найти подходящую работу.",
+  alternates: {
+    canonical: "https://vahta1.ru/contact",
+  },
+  openGraph: {
+    title: "Контакты | Работа Вахтой: для граждан РФ и РБ",
+    description: "Свяжитесь с нами по вопросам вакансий вахтовым методом. Наши специалисты готовы ответить на все ваши вопросы и помочь найти подходящую работу.",
+    url: "https://vahta1.ru/contact",
+  },
 };
 
 export default function ContactPage() {
@@ -75,7 +83,7 @@ export default function ContactPage() {
                     <p className="text-muted-foreground mb-1">Главный офис:</p>
                     <p className="text-lg">
                       Могилёв, ул Лепешинского 14, цокольный этаж<br />
-                      
+
                     </p>
                   </div>
                 </div>

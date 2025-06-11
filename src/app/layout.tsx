@@ -17,9 +17,9 @@ export const metadata: Metadata = {
   description:
     "Мы создали инновационное пространство для поиска работы вахтовым методом. Современный подход, лучшие предложения, надежные работодатели.",
   icons: {
-    icon: "/logo2.svg",
-    shortcut: "/logo2.svg",
-    apple: "/logo2.svg",
+    icon: "/favicon.svg",
+    shortcut: "/favicon.svg",
+    apple: "/favicon.svg",
   },
   keywords: [
     "вахта",
@@ -47,19 +47,19 @@ export const metadata: Metadata = {
     },
   },
   alternates: {
-    canonical: "https://vahtaone.ru",
+    canonical: "https://vahta1.ru",
   },
   openGraph: {
     type: "website",
     locale: "ru_RU",
-    url: "https://vahtaone.ru",
+    url: "https://vahta1.ru",
     siteName: "Работа Вахтой: для граждан РФ и РБ",
     title: "Работа Вахтой: для граждан РФ и РБ - Вакансии вахтовым методом",
     description:
       "Мы создали инновационное пространство для поиска работы вахтовым методом. Современный подход, лучшие предложения, надежные работодатели.",
     images: [
       {
-        url: "https://vahtaone.ru/og-image.jpg",
+        url: "https://vahta1.ru/og-image.jpg",
         width: 1200,
         height: 630,
         alt: "Работа Вахтой: для граждан РФ и РБ",
@@ -71,7 +71,7 @@ export const metadata: Metadata = {
     title: "Работа Вахтой: для граждан РФ и РБ - Вакансии вахтовым методом",
     description:
       "Мы создали инновационное пространство для поиска работы вахтовым методом. Современный подход, лучшие предложения, надежные работодатели.",
-    images: ["https://vahtaone.ru/og-image.jpg"],
+    images: ["https://vahta1.ru/og-image.jpg"],
   },
 };
 
@@ -84,12 +84,15 @@ export default function RootLayout({
     <html lang="ru" className={manrope.variable} suppressHydrationWarning>
       <head>
         {/* Favicon */}
-        <link rel="icon" href="/logo2.svg" type="image/svg+xml" />
-        <link rel="icon" href="/logo2.svg" sizes="any" />
-        <link rel="shortcut icon" href="/logo2.svg" />
-        <link rel="apple-touch-icon" href="/logo2.svg" sizes="180x180" />
+        <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+        <link rel="icon" href="/favicon.svg" sizes="any" />
+        <link rel="shortcut icon" href="/favicon.svg" />
+        <link rel="apple-touch-icon" href="/favicon.svg" sizes="180x180" />
+        <link rel="icon" type="image/png" sizes="32x32" href="/favicon.svg" />
+        <link rel="icon" type="image/png" sizes="16x16" href="/favicon.svg" />
         <link rel="manifest" href="/manifest.json" />
         <meta name="theme-color" content="#ff1414" />
+        <meta name="msapplication-TileColor" content="#ff1414" />
 
         {/* Yandex.Metrika counter */}
         <script
@@ -102,7 +105,7 @@ export default function RootLayout({
               k=e.createElement(t),a=e.getElementsByTagName(t)[0],k.async=1,k.src=r,a.parentNode.insertBefore(k,a)})
               (window, document, "script", "https://mc.yandex.ru/metrika/tag.js", "ym");
 
-              ym(102484390, "init", {
+              ym(102585697, "init", {
                    clickmap:true,
                    trackLinks:true,
                    accurateTrackBounce:true
@@ -113,7 +116,7 @@ export default function RootLayout({
         <noscript>
           <div>
             <img
-              src="https://mc.yandex.ru/watch/102484390"
+              src="https://mc.yandex.ru/watch/102585697"
               style={{position:'absolute', left:'-9999px'}}
               alt=""
             />

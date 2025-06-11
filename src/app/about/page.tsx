@@ -5,8 +5,16 @@ import AnimatedHeading from "@/components/ui/AnimatedHeading";
 import AnimatedSection from "@/components/ui/AnimatedSection";
 
 export const metadata: Metadata = {
-  title: "О нас | Работа Вахтой: Новый Взгляд",
+  title: "О нас | Работа Вахтой: для граждан РФ и РБ",
   description: "Мы создали инновационную платформу для поиска работы вахтовым методом. Узнайте, как мы помогаем соискателям найти достойную работу.",
+  alternates: {
+    canonical: "https://vahta1.ru/about",
+  },
+  openGraph: {
+    title: "О нас | Работа Вахтой: для граждан РФ и РБ",
+    description: "Мы создали инновационную платформу для поиска работы вахтовым методом. Узнайте, как мы помогаем соискателям найти достойную работу.",
+    url: "https://vahta1.ru/about",
+  },
 };
 
 export default function AboutPage() {

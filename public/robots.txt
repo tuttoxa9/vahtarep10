@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://vahtaone.ru/sitemap.xml
+Sitemap: https://vahta1.ru/sitemap.xml
