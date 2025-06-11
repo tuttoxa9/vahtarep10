@@ -132,15 +132,16 @@ export default function EmployersPageClient() {
                 Специальные условия для работодателей
               </div>
               <h1 className="text-4xl md:text-6xl font-bold mb-6 leading-tight text-gray-900">
-                <SplitText
-                  text="Быстрый поиск"
-                  className="text-4xl md:text-6xl font-bold"
-                  splitType="words"
-                  delay={50}
-                  duration={0.8}
-                />
-                {" "}
-                <span className="text-blue-600">
+                <div>
+                  <SplitText
+                    text="Быстрый поиск"
+                    className="text-4xl md:text-6xl font-bold"
+                    splitType="words"
+                    delay={50}
+                    duration={0.8}
+                  />
+                </div>
+                <div className="text-blue-600">
                   <SplitText
                     text="ваших работников"
                     className="text-4xl md:text-6xl font-bold"
@@ -148,7 +149,7 @@ export default function EmployersPageClient() {
                     delay={80}
                     duration={0.8}
                   />
-                </span>
+                </div>
               </h1>
               <div className="text-xl md:text-2xl text-gray-600 max-w-3xl mx-auto mb-8">
                 <SplitText
