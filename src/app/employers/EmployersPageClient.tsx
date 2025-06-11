@@ -26,6 +26,7 @@ import Aurora from '@/components/ui/Aurora';
 
 export default function EmployersPageClient() {
   const [isFormSubmitting, setIsFormSubmitting] = useState(false);
+  const [isFormModalOpen, setIsFormModalOpen] = useState(false);
   const [formData, setFormData] = useState({
     companyName: '',
     contactPerson: '',
@@ -43,6 +44,13 @@ export default function EmployersPageClient() {
       ...prev,
       [name]: value
     }));
+  };
+
+  const scrollToForm = () => {
+    const formElement = document.getElementById('contact-form');
+    if (formElement) {
+      formElement.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    }
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -111,10 +119,10 @@ export default function EmployersPageClient() {
         {/* Aurora Background */}
         <div className="fixed top-0 left-0 w-full h-screen z-0 pointer-events-none">
           <Aurora
-            colorStops={["#FFB347", "#FFCC99", "#FFB347"]}
-            amplitude={0.5}
-            blend={0.15}
-            speed={0.3}
+            colorStops={["#E6F3FF", "#F0F8FF", "#E6F3FF"]}
+            amplitude={0.3}
+            blend={0.05}
+            speed={0.2}
           />
         </div>
 
@@ -143,7 +151,11 @@ export default function EmployersPageClient() {
                 Выгодные условия, гарантии качества и полное сопровождение.
               </p>
               <div className="flex flex-col sm:flex-row gap-4 justify-center">
-                <Button size="lg" className="bg-blue-600 hover:bg-blue-700 text-white px-8 py-4">
+                <Button
+                  size="lg"
+                  className="bg-blue-600 hover:bg-blue-700 text-white px-8 py-4"
+                  onClick={scrollToForm}
+                >
                   <Phone className="h-5 w-5 mr-2" />
                   Получить консультацию
                 </Button>
@@ -218,7 +230,7 @@ export default function EmployersPageClient() {
 
 
         {/* Contact Form Section */}
-        <section className="py-20 bg-white">
+        <section id="contact-form" className="py-20 bg-white">
           <div className="container mx-auto px-4 md:px-6 lg:px-8">
             <div className="max-w-4xl mx-auto">
               <motion.div
@@ -395,14 +407,18 @@ export default function EmployersPageClient() {
               <p className="text-xl mb-8 max-w-3xl mx-auto opacity-90">
                 Присоединяйтесь к сотням довольных работодателей, которые нашли у нас надежных партнеров
               </p>
-              <div className="flex flex-col sm:flex-row gap-4 justify-center">
-                <Button size="lg" className="bg-white text-blue-600 hover:bg-gray-100">
+              <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
+                <Button
+                  size="lg"
+                  className="bg-white text-blue-600 hover:bg-gray-100"
+                  onClick={scrollToForm}
+                >
                   <Phone className="h-5 w-5 mr-2" />
-                  Позвонить сейчас
+                  Получить консультацию
                 </Button>
-                <Button size="lg" variant="outline" className="border-white text-white hover:bg-white hover:text-blue-600">
-                  Узнать больше
-                </Button>
+                <div className="text-white text-xl font-semibold">
+                  📞 +375291565232
+                </div>
               </div>
             </motion.div>
           </div>
