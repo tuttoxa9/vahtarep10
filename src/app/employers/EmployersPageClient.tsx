@@ -111,10 +111,10 @@ export default function EmployersPageClient() {
         {/* Aurora Background */}
         <div className="fixed top-0 left-0 w-full h-screen z-0 pointer-events-none">
           <Aurora
-            colorStops={["#FF8C00", "#32CD32", "#FF8C00"]}
-            amplitude={1.0}
-            blend={0.4}
-            speed={0.4}
+            colorStops={["#FFB347", "#FFCC99", "#FFB347"]}
+            amplitude={0.5}
+            blend={0.15}
+            speed={0.3}
           />
         </div>
 
