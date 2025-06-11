@@ -31,15 +31,16 @@ export default function ClientBody({
       section: "hero-section"
     },
     {
-      label: "Работодателям",
-      href: "/employers",
-      icon: <BuildingIcon className="h-6 w-6" />
-    },
-    {
       label: "Вакансии",
       href: "/vacancies",
       icon: <BriefcaseIcon className="h-6 w-6" />,
       section: "popular-vacancies"
+    },
+    {
+      label: "Контакты",
+      href: "/contact",
+      icon: <PhoneIcon className="h-6 w-6" />,
+      section: "how-it-works"
     },
     {
       label: "О нас",
@@ -48,10 +49,9 @@ export default function ClientBody({
       section: "features-section"
     },
     {
-      label: "Контакты",
-      href: "/contact",
-      icon: <PhoneIcon className="h-6 w-6" />,
-      section: "how-it-works"
+      label: "Работодателям",
+      href: "/employers",
+      icon: <BuildingIcon className="h-6 w-6" />
     },
   ];
 
