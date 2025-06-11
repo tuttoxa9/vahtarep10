@@ -11,7 +11,6 @@ import {
   CheckCircle,
   Phone,
   Mail,
-  Calculator,
   Building,
   HandHeart,
   Zap
@@ -23,6 +22,7 @@ import { Textarea } from '@/components/ui/textarea';
 import { Label } from '@/components/ui/label';
 import { toast } from '@/hooks/use-toast';
 import PageLayout from '@/components/layout/PageLayout';
+import Aurora from '@/components/ui/Aurora';
 
 export default function EmployersPageClient() {
   const [isFormSubmitting, setIsFormSubmitting] = useState(false);
@@ -82,79 +82,44 @@ export default function EmployersPageClient() {
   const benefits = [
     {
       icon: <Users className="h-8 w-8 text-blue-600" />,
-      title: "База проверенных работников",
-      description: "Более 10 000 квалифицированных специалистов готовых к работе"
+      title: "Проверенные кандидаты",
+      description: "Более 5 000 готовых к работе специалистов"
     },
     {
       icon: <Clock className="h-8 w-8 text-green-600" />,
-      title: "Быстрый подбор персонала",
-      description: "Подбираем кандидатов за 24-48 часов"
+      title: "Быстрый подбор",
+      description: "Находим кандидатов за 24 часа"
     },
     {
       icon: <Shield className="h-8 w-8 text-purple-600" />,
       title: "Гарантия качества",
-      description: "100% возврат средств при несоответствии кандидата требованиям"
-    },
-    {
-      icon: <TrendingUp className="h-8 w-8 text-orange-600" />,
-      title: "Выгодные тарифы",
-      description: "Специальные цены для крупных работодателей и постоянных клиентов"
+      description: "Замена кандидата при несоответствии"
     }
   ];
 
-  const tariffs = [
-    {
-      name: "Стартовый",
-      price: "от 15 000 ₽",
-      period: "за подбор 1-10 человек",
-      features: [
-        "Подбор квалифицированных кандидатов",
-        "Проверка документов",
-        "Первичное собеседование",
-        "Техподдержка 5/2"
-      ],
-      popular: false
-    },
-    {
-      name: "Бизнес",
-      price: "от 12 000 ₽",
-      period: "за подбор 11-50 человек",
-      features: [
-        "Все возможности тарифа Стартовый",
-        "Скидка 20% при постоянном сотрудничестве",
-        "Персональный менеджер",
-        "Техподдержка 24/7",
-        "Дополнительные проверки кандидатов"
-      ],
-      popular: true
-    },
-    {
-      name: "Корпоративный",
-      price: "Индивидуально",
-      period: "для крупных проектов",
-      features: [
-        "Все возможности тарифа Бизнес",
-        "Максимальные скидки до 35%",
-        "Выделенная команда специалистов",
-        "SLA гарантии",
-        "Эксклюзивные условия"
-      ],
-      popular: false
-    }
-  ];
+
 
   const stats = [
-    { number: "10 000+", label: "Проверенных работников" },
-    { number: "500+", label: "Довольных работодателей" },
-    { number: "24 часа", label: "Среднее время подбора" },
-    { number: "98%", label: "Успешных трудоустройств" }
+    { number: "5 000+", label: "Проверенных работников" },
+    { number: "200+", label: "Довольных работодателей" },
+    { number: "24 часа", label: "Время подбора" }
   ];
 
   return (
     <PageLayout>
       <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-purple-50">
+        {/* Aurora Background */}
+        <div className="fixed top-0 left-0 w-full h-screen z-0 pointer-events-none">
+          <Aurora
+            colorStops={["#2563eb", "#7c3aed", "#2563eb"]}
+            amplitude={1.2}
+            blend={0.6}
+            speed={0.8}
+          />
+        </div>
+
         {/* Hero Section */}
-        <section className="pt-20 pb-16 px-4 md:px-6 lg:px-8">
+        <section className="relative z-10 pt-20 pb-16 px-4 md:px-6 lg:px-8">
           <div className="container mx-auto">
             <motion.div
               initial={{ opacity: 0, y: 30 }}
@@ -182,10 +147,6 @@ export default function EmployersPageClient() {
                   <Phone className="h-5 w-5 mr-2" />
                   Получить консультацию
                 </Button>
-                <Button size="lg" variant="outline" className="px-8 py-4">
-                  <Calculator className="h-5 w-5 mr-2" />
-                  Рассчитать стоимость
-                </Button>
               </div>
             </motion.div>
 
@@ -194,7 +155,7 @@ export default function EmployersPageClient() {
               initial={{ opacity: 0, y: 30 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8, delay: 0.2 }}
-              className="grid grid-cols-2 md:grid-cols-4 gap-8 mb-20"
+              className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-20"
             >
               {stats.map((stat, index) => (
                 <div key={index} className="text-center">
@@ -226,7 +187,7 @@ export default function EmployersPageClient() {
               </p>
             </motion.div>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
               {benefits.map((benefit, index) => (
                 <motion.div
                   key={index}
@@ -254,73 +215,7 @@ export default function EmployersPageClient() {
           </div>
         </section>
 
-        {/* Tariffs Section */}
-        <section className="py-20 bg-gradient-to-br from-gray-50 to-blue-50">
-          <div className="container mx-auto px-4 md:px-6 lg:px-8">
-            <motion.div
-              initial={{ opacity: 0, y: 30 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.8 }}
-              viewport={{ once: true }}
-              className="text-center mb-16"
-            >
-              <h2 className="text-3xl md:text-5xl font-bold text-gray-900 mb-6">
-                Выгодные тарифы
-              </h2>
-              <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-                Выберите подходящий тариф для вашего бизнеса
-              </p>
-            </motion.div>
 
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-              {tariffs.map((tariff, index) => (
-                <motion.div
-                  key={index}
-                  initial={{ opacity: 0, y: 30 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.8, delay: index * 0.1 }}
-                  viewport={{ once: true }}
-                  className="relative"
-                >
-                  {tariff.popular && (
-                    <div className="absolute -top-4 left-1/2 transform -translate-x-1/2 z-10">
-                      <div className="bg-gradient-to-r from-blue-600 to-purple-600 text-white px-4 py-2 rounded-full text-sm font-medium flex items-center">
-                        <Star className="h-4 w-4 mr-1" />
-                        Популярный
-                      </div>
-                    </div>
-                  )}
-                  <Card className={`h-full ${tariff.popular ? 'ring-2 ring-blue-600 shadow-xl' : 'shadow-lg'} hover:shadow-xl transition-shadow duration-300`}>
-                    <CardHeader className="text-center pb-4">
-                      <CardTitle className="text-2xl font-bold text-gray-900">
-                        {tariff.name}
-                      </CardTitle>
-                      <div className="mt-4">
-                        <div className="text-4xl font-bold text-blue-600">{tariff.price}</div>
-                        <div className="text-gray-600 mt-1">{tariff.period}</div>
-                      </div>
-                    </CardHeader>
-                    <CardContent>
-                      <ul className="space-y-3 mb-6">
-                        {tariff.features.map((feature, featureIndex) => (
-                          <li key={featureIndex} className="flex items-start">
-                            <CheckCircle className="h-5 w-5 text-green-600 mr-3 mt-0.5 flex-shrink-0" />
-                            <span className="text-gray-600">{feature}</span>
-                          </li>
-                        ))}
-                      </ul>
-                      <Button
-                        className={`w-full ${tariff.popular ? 'bg-blue-600 hover:bg-blue-700' : 'bg-gray-800 hover:bg-gray-900'}`}
-                      >
-                        {tariff.name === 'Корпоративный' ? 'Связаться с нами' : 'Выбрать тариф'}
-                      </Button>
-                    </CardContent>
-                  </Card>
-                </motion.div>
-              ))}
-            </div>
-          </div>
-        </section>
 
         {/* Contact Form Section */}
         <section className="py-20 bg-white">
