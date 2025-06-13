@@ -270,7 +270,7 @@ export default function VacancyDetailNew({ vacancy }: VacancyDetailNewProps) {
                         Назад
                       </Button>
                     </div>
-                    <ApplicationForm vacancyId={vacancy.id} className="" />
+                    <ApplicationForm vacancyId={vacancy.id} vacancyTitle={vacancy.title} className="" />
                   </div>
                 </motion.div>
               ) : (

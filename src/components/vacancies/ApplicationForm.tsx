@@ -20,6 +20,7 @@ import { cn } from "@/lib/utils";
 
 interface ApplicationFormProps {
   vacancyId: string;
+  vacancyTitle?: string;
   className?: string;
 }
 
@@ -30,7 +31,7 @@ interface FormValues {
   message: string;
 }
 
-export default function ApplicationForm({ vacancyId, className }: ApplicationFormProps) {
+export default function ApplicationForm({ vacancyId, vacancyTitle, className }: ApplicationFormProps) {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitted, setSubmitted] = useState(false);
   const router = useRouter();
@@ -137,9 +138,13 @@ export default function ApplicationForm({ vacancyId, className }: ApplicationFor
         // Сбрасываем форму
         form.reset();
 
-        // Перенаправление на страницу благодарности
+        // Перенаправление на страницу благодарности для вакансий
         setTimeout(() => {
-          router.push("/thank-you");
+          const params = new URLSearchParams();
+          if (vacancyTitle) {
+            params.set('vacancy', vacancyTitle);
+          }
+          router.push(`/thank-you-vacancy?${params.toString()}`);
         }, 1000);
       } else {
         console.error("Server error:", result);

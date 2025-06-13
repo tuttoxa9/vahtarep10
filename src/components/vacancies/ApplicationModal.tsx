@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { useForm } from "react-hook-form";
+import { useRouter } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import {
@@ -41,6 +42,7 @@ interface FormValues {
 export default function ApplicationModal({ vacancy, isOpen, onClose }: ApplicationModalProps) {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitted, setSubmitted] = useState(false);
+  const router = useRouter();
 
   const form = useForm<FormValues>({
     defaultValues: {
@@ -73,10 +75,18 @@ export default function ApplicationModal({ vacancy, isOpen, onClose }: Applicati
 
       if (response.ok && result.success) {
         setSubmitted(true);
-        toast.success("Заявка успешно отправлена! Мы свяжемся с вами в ближайшее время.");
+        toast.success("Заявка отправлена! Перенаправляем...");
 
         // Сбрасываем форму
         form.reset();
+
+        // Закрываем модальное окно и перенаправляем на страницу благодарности
+        setTimeout(() => {
+          onClose();
+          const params = new URLSearchParams();
+          params.set('vacancy', vacancy.title);
+          router.push(`/thank-you-vacancy?${params.toString()}`);
+        }, 1000);
       } else {
         console.error("Server error:", result);
         toast.error(result.error || "Ошибка при отправке заявки. Пожалуйста, попробуйте еще раз.");

@@ -222,11 +222,11 @@ export default function VacancyDetail({ vacancy }: VacancyDetailProps) {
           >
             {showApplicationForm ? (
               <AnimatedSection type="slideUp">
-                <ApplicationForm vacancyId={vacancy.id} />
+                <ApplicationForm vacancyId={vacancy.id} vacancyTitle={vacancy.title} />
               </AnimatedSection>
             ) : (
               <AnimatedSection type="slideUp" delay={0.3}>
-                <div 
+                <div
                   className="card-depth bg-white/90 backdrop-blur-sm border border-border/30 rounded-xl p-6 space-y-6 shadow-lg transition-all duration-300 hover:shadow-xl"
                 >
                   <h3 className="text-xl font-bold text-foreground text-shadow-xs">Интересует эта вакансия?</h3>
