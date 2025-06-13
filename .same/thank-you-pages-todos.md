@@ -20,4 +20,10 @@
   - [x] Updated ApplicationForm.tsx to redirect to vacancy thank you page
   - [x] Updated ApplicationModal.tsx to redirect to vacancy thank you page
   - [x] Updated VacancyDetail.tsx and VacancyDetailNew.tsx to pass vacancy title
+- [x] Create unified thank-you2 page for all vacancy applications
+  - [x] Created /thank-you2 page that adapts based on vacancy parameter
+  - [x] Updated ApplicationForm.tsx to redirect to /thank-you2
+  - [x] Updated ApplicationModal.tsx to redirect to /thank-you2
+  - [x] Updated HeroApplicationForm.tsx to redirect to /thank-you2
+  - [x] Page shows different content for vacancy applications vs general applications
 - ✅ TASK COMPLETED!

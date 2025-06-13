@@ -138,13 +138,13 @@ export default function ApplicationForm({ vacancyId, vacancyTitle, className }: 
         // Сбрасываем форму
         form.reset();
 
-        // Перенаправление на страницу благодарности для вакансий
+        // Перенаправление на единую страницу благодарности
         setTimeout(() => {
           const params = new URLSearchParams();
           if (vacancyTitle) {
             params.set('vacancy', vacancyTitle);
           }
-          router.push(`/thank-you-vacancy?${params.toString()}`);
+          router.push(`/thank-you2?${params.toString()}`);
         }, 1000);
       } else {
         console.error("Server error:", result);

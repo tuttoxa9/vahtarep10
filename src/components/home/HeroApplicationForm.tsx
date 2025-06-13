@@ -127,9 +127,9 @@ export default function HeroApplicationForm({ className }: HeroApplicationFormPr
         toast.success("Заявка отправлена! Перенаправляем...");
         form.reset({ name: "", phone: "" });
 
-        // Перенаправление на страницу благодарности
+        // Перенаправление на единую страницу благодарности
         setTimeout(() => {
-          router.push("/thank-you");
+          router.push("/thank-you2");
         }, 1000);
       } else {
         throw new Error('Ошибка отправки');
