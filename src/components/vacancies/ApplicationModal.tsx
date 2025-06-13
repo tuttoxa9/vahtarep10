@@ -83,9 +83,7 @@ export default function ApplicationModal({ vacancy, isOpen, onClose }: Applicati
         // Закрываем модальное окно и перенаправляем на единую страницу благодарности
         setTimeout(() => {
           onClose();
-          const params = new URLSearchParams();
-          params.set('vacancy', vacancy.title);
-          router.push(`/thank-you2?${params.toString()}`);
+          router.push('/thank-you2');
         }, 1000);
       } else {
         console.error("Server error:", result);

@@ -6,12 +6,9 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import Link from 'next/link';
 import PageLayout from '@/components/layout/PageLayout';
-import { useSearchParams } from 'next/navigation';
 import { Suspense } from 'react';
 
 function ThankYou2Content() {
-  const searchParams = useSearchParams();
-  const vacancyTitle = searchParams.get('vacancy');
 
   return (
     <PageLayout>
@@ -157,29 +154,14 @@ function ThankYou2Content() {
                     🎉 Заявка отправлена!
                   </motion.h1>
 
-                  {vacancyTitle ? (
-                    <motion.p
-                      className="text-xl text-gray-700 mb-10 leading-relaxed"
-                      initial={{ opacity: 0 }}
-                      animate={{ opacity: 1 }}
-                      transition={{ delay: 1, duration: 0.6 }}
-                    >
-                      Ваш отклик на вакансию{" "}
-                      <span className="font-bold text-transparent bg-gradient-to-r from-emerald-600 to-teal-600 bg-clip-text">
-                        "{vacancyTitle}"
-                      </span>{" "}
-                      успешно отправлен. Работодатель получит ваши данные и свяжется с вами в ближайшее время.
-                    </motion.p>
-                  ) : (
-                    <motion.p
-                      className="text-xl text-gray-700 mb-10 leading-relaxed"
-                      initial={{ opacity: 0 }}
-                      animate={{ opacity: 1 }}
-                      transition={{ delay: 1, duration: 0.6 }}
-                    >
-                      Ваша заявка успешно отправлена. Мы обработаем её и свяжемся с вами в ближайшее время для обсуждения подходящих вакансий.
-                    </motion.p>
-                  )}
+                  <motion.p
+                    className="text-xl text-gray-700 mb-10 leading-relaxed"
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    transition={{ delay: 1, duration: 0.6 }}
+                  >
+                    Ваша заявка на вакансию успешно отправлена! Работодатель получит ваши данные и свяжется с вами в ближайшее время.
+                  </motion.p>
                 </motion.div>
 
                 {/* Enhanced Info Cards */}
@@ -202,7 +184,7 @@ function ThankYou2Content() {
                     </motion.div>
                     <h3 className="font-bold text-gray-900 mb-2 text-lg">Время ответа</h3>
                     <p className="text-gray-600 font-medium">
-                      {vacancyTitle ? "1-3 рабочих дня" : "В течение 1 часа"}
+                      1-3 рабочих дня
                     </p>
                   </motion.div>
 
@@ -219,7 +201,7 @@ function ThankYou2Content() {
                     </motion.div>
                     <h3 className="font-bold text-gray-900 mb-2 text-lg">Кто свяжется</h3>
                     <p className="text-gray-600 font-medium">
-                      {vacancyTitle ? "Представитель работодателя" : "HR-менеджер"}
+                      Представитель работодателя
                     </p>
                   </motion.div>
                 </motion.div>
@@ -242,57 +224,30 @@ function ThankYou2Content() {
                     <h3 className="font-bold text-gray-900 text-xl">Что происходит дальше?</h3>
                   </div>
 
-                  {vacancyTitle ? (
-                    <div className="space-y-4 text-left max-w-md mx-auto">
-                      {[
-                        "Работодатель получает ваш отклик и изучает ваши данные",
-                        "При заинтересованности с вами свяжутся для уточнения деталей",
-                        "Проведут собеседование и обсудят условия работы"
-                      ].map((step, index) => (
+                  <div className="space-y-4 text-left max-w-md mx-auto">
+                    {[
+                      "Работодатель получает ваш отклик и изучает ваши данные",
+                      "При заинтересованности с вами свяжутся для уточнения деталей",
+                      "Проведут собеседование и обсудят условия работы"
+                    ].map((step, index) => (
+                      <motion.div
+                        key={index}
+                        className="flex items-start space-x-4"
+                        initial={{ opacity: 0, x: -20 }}
+                        animate={{ opacity: 1, x: 0 }}
+                        transition={{ delay: 1.6 + index * 0.2, duration: 0.6 }}
+                      >
                         <motion.div
-                          key={index}
-                          className="flex items-start space-x-4"
-                          initial={{ opacity: 0, x: -20 }}
-                          animate={{ opacity: 1, x: 0 }}
-                          transition={{ delay: 1.6 + index * 0.2, duration: 0.6 }}
+                          className="w-8 h-8 bg-gradient-to-r from-emerald-500 to-teal-500 text-white rounded-full flex items-center justify-center text-sm font-bold mt-1 shadow-lg"
+                          whileHover={{ scale: 1.1 }}
+                          transition={{ type: "spring", stiffness: 400, damping: 10 }}
                         >
-                          <motion.div
-                            className="w-8 h-8 bg-gradient-to-r from-emerald-500 to-teal-500 text-white rounded-full flex items-center justify-center text-sm font-bold mt-1 shadow-lg"
-                            whileHover={{ scale: 1.1 }}
-                            transition={{ type: "spring", stiffness: 400, damping: 10 }}
-                          >
-                            {index + 1}
-                          </motion.div>
-                          <p className="text-gray-700 font-medium leading-relaxed">{step}</p>
+                          {index + 1}
                         </motion.div>
-                      ))}
-                    </div>
-                  ) : (
-                    <div className="space-y-4 text-left max-w-md mx-auto">
-                      {[
-                        "Наш менеджер свяжется с вами для уточнения деталей",
-                        "Подберем наиболее подходящие вакансии",
-                        "Организуем собеседование с работодателем"
-                      ].map((step, index) => (
-                        <motion.div
-                          key={index}
-                          className="flex items-start space-x-4"
-                          initial={{ opacity: 0, x: -20 }}
-                          animate={{ opacity: 1, x: 0 }}
-                          transition={{ delay: 1.6 + index * 0.2, duration: 0.6 }}
-                        >
-                          <motion.div
-                            className="w-8 h-8 bg-gradient-to-r from-emerald-500 to-teal-500 text-white rounded-full flex items-center justify-center text-sm font-bold mt-1 shadow-lg"
-                            whileHover={{ scale: 1.1 }}
-                            transition={{ type: "spring", stiffness: 400, damping: 10 }}
-                          >
-                            {index + 1}
-                          </motion.div>
-                          <p className="text-gray-700 font-medium leading-relaxed">{step}</p>
-                        </motion.div>
-                      ))}
-                    </div>
-                  )}
+                        <p className="text-gray-700 font-medium leading-relaxed">{step}</p>
+                      </motion.div>
+                    ))}
+                  </div>
                 </motion.div>
 
                 {/* Enhanced Tips Section */}
