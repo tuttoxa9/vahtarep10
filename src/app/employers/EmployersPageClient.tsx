@@ -2,6 +2,7 @@
 
 import { useState } from 'react';
 import { motion } from 'framer-motion';
+import { useRouter } from 'next/navigation';
 import {
   Users,
   TrendingUp,
@@ -29,6 +30,7 @@ import { WavyBackground } from '@/components/ui/WavyBackground';
 export default function EmployersPageClient() {
   const [isFormSubmitting, setIsFormSubmitting] = useState(false);
   const [isFormModalOpen, setIsFormModalOpen] = useState(false);
+  const router = useRouter();
   const [formData, setFormData] = useState({
     companyName: '',
     contactPerson: '',
@@ -76,7 +78,7 @@ export default function EmployersPageClient() {
       if (response.ok && result.success) {
         toast({
           title: "Заявка отправлена!",
-          description: result.message || "Мы свяжемся с вами в течение 2 часов для обсуждения условий сотрудничества.",
+          description: "Перенаправляем на страницу подтверждения...",
         });
 
         setFormData({
@@ -89,6 +91,11 @@ export default function EmployersPageClient() {
           location: '',
           message: ''
         });
+
+        // Перенаправление на страницу благодарности для работодателей
+        setTimeout(() => {
+          router.push("/thank-you-employer");
+        }, 1000);
       } else {
         throw new Error(result.error || 'Не удалось отправить заявку');
       }

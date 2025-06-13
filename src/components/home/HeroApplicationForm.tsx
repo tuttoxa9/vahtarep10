@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { useForm } from "react-hook-form";
+import { useRouter } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import {
@@ -89,6 +90,7 @@ const formatPhone = (value: string) => {
 export default function HeroApplicationForm({ className }: HeroApplicationFormProps) {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitted, setSubmitted] = useState(false);
+  const router = useRouter();
 
   const form = useForm<FormValues>({
     defaultValues: {
@@ -122,8 +124,13 @@ export default function HeroApplicationForm({ className }: HeroApplicationFormPr
 
       if (response.ok) {
         setSubmitted(true);
-        toast.success("Заявка отправлена! Мы свяжемся с вами в ближайшее время.");
+        toast.success("Заявка отправлена! Перенаправляем...");
         form.reset({ name: "", phone: "" });
+
+        // Перенаправление на страницу благодарности
+        setTimeout(() => {
+          router.push("/thank-you");
+        }, 1000);
       } else {
         throw new Error('Ошибка отправки');
       }

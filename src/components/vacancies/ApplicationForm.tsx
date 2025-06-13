@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { useForm } from "react-hook-form";
+import { useRouter } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import {
@@ -32,6 +33,7 @@ interface FormValues {
 export default function ApplicationForm({ vacancyId, className }: ApplicationFormProps) {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitted, setSubmitted] = useState(false);
+  const router = useRouter();
 
   const form = useForm<FormValues>({
     defaultValues: {
@@ -130,10 +132,15 @@ export default function ApplicationForm({ vacancyId, className }: ApplicationFor
           }
         }
 
-        toast.success(successMessage);
+        toast.success("Заявка отправлена! Перенаправляем...");
 
         // Сбрасываем форму
         form.reset();
+
+        // Перенаправление на страницу благодарности
+        setTimeout(() => {
+          router.push("/thank-you");
+        }, 1000);
       } else {
         console.error("Server error:", result);
         const errorMessage = result.error || `Ошибка сервера (${response.status}). Пожалуйста, попробуйте еще раз.`;
