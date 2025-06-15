@@ -1,0 +1,332 @@
+"use client";
+
+import { useState, useEffect } from "react";
+import { motion, AnimatePresence } from "framer-motion";
+import { Button } from "@/components/ui/button";
+import { Badge } from "@/components/ui/badge";
+import ApplicationForm from "./ApplicationForm";
+import { formatSalary, formatDate } from "@/lib/utils";
+import type { FirestoreVacancy } from "@/types";
+import {
+  ArrowLeft,
+  MapPin,
+  Briefcase,
+  Star,
+  Eye,
+  Calendar,
+  DollarSign,
+  User,
+  Clock,
+  CheckCircle,
+  Gift,
+  X,
+} from "lucide-react";
+
+interface VacancyOverlayProps {
+  vacancy: FirestoreVacancy;
+  isOpen: boolean;
+  onClose: () => void;
+}
+
+export default function VacancyOverlay({ 
+  vacancy, 
+  isOpen, 
+  onClose 
+}: VacancyOverlayProps) {
+  const [showApplicationForm, setShowApplicationForm] = useState(false);
+
+  useEffect(() => {
+    // Блокируем прокрутку страницы, когда открывается оверлей
+    if (isOpen) {
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "auto";
+    }
+    
+    return () => {
+      document.body.style.overflow = "auto";
+    };
+  }, [isOpen]);
+
+  const toggleApplicationForm = () => {
+    setShowApplicationForm(!showApplicationForm);
+  };
+
+  // Функция для обработки даты в разных форматах
+  const formatCreatedDate = (date: any) => {
+    if (typeof date === 'string') {
+      return formatDate(new Date(date));
+    } else if (date instanceof Date) {
+      return formatDate(date);
+    } else if (date && typeof date === 'object' && 'toDate' in date && typeof date.toDate === 'function') {
+      return formatDate(date.toDate());
+    }
+    return 'Дата не указана';
+  };
+
+  // Простая анимация для оверлея - плавное появление
+  const overlayVariants = {
+    initial: {
+      opacity: 0,
+      y: 20
+    },
+    animate: {
+      opacity: 1,
+      y: 0,
+      transition: {
+        duration: 0.3,
+        ease: "easeOut"
+      }
+    },
+    exit: {
+      opacity: 0,
+      y: 20,
+      transition: {
+        duration: 0.2,
+        ease: "easeIn"
+      }
+    }
+  };
+
+  // Все элементы анимируются вместе с родительским элементом
+  const contentVariants = {
+    initial: {
+      opacity: 1,
+    },
+    animate: {
+      opacity: 1,
+      transition: {
+        duration: 0,
+      }
+    }
+  };
+
+  return (
+    <AnimatePresence>
+      {isOpen && (
+        <motion.div 
+          className="fixed inset-0 z-50 overflow-hidden"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          exit={{ opacity: 0 }}
+        >
+          {/* Затемненный фон */}
+          <div 
+            className="absolute inset-0 bg-black/50 backdrop-blur-sm" 
+            onClick={onClose}
+          />
+          
+          {/* Контент оверлея - полный экран с прокруткой */}
+          <motion.div
+            className="absolute inset-0 overflow-y-auto"
+            variants={overlayVariants}
+            initial="initial"
+            animate="animate"
+            exit="exit"
+          >
+            <div className="min-h-screen bg-white">
+              {/* Красный градиентный хедер */}
+              <div className="relative h-60 bg-gradient-to-br from-red-500 via-red-600 to-red-700 overflow-hidden">
+                {/* Декоративные элементы */}
+                <div className="absolute inset-0 bg-gradient-to-b from-transparent via-red-500/20 to-red-900/40" />
+                <div className="absolute top-10 right-10 w-32 h-32 bg-white/10 rounded-full blur-xl" />
+                <div className="absolute bottom-20 left-20 w-20 h-20 bg-white/10 rounded-full blur-lg" />
+                
+                {/* Контент хедера */}
+                <div className="relative z-10 h-full flex flex-col p-6 text-white">
+                  {/* Навигация */}
+                  <div className="flex items-center justify-between mb-6">
+                    <Button
+                      variant="outline"
+                      size="sm"
+                      className="bg-white/20 backdrop-blur-sm border-white/30 text-white hover:bg-white/30 hover:text-white transition-all duration-300"
+                      onClick={onClose}
+                    >
+                      <ArrowLeft className="h-4 w-4 mr-2" />
+                      Закрыть
+                    </Button>
+                    
+                    <Button
+                      variant="outline"
+                      size="sm"
+                      className="bg-white/20 backdrop-blur-sm border-white/30 text-white hover:bg-white/30 hover:text-white transition-all duration-300"
+                      onClick={toggleApplicationForm}
+                    >
+                      <User className="h-4 w-4 mr-2" />
+                      {showApplicationForm ? 'Скрыть форму' : 'Откликнуться'}
+                    </Button>
+                  </div>
+
+                  {/* Основной контент хедера */}
+                  <div className="flex-grow flex flex-col justify-center">
+                    <motion.div
+                      className="space-y-2"
+                      variants={contentVariants}
+                      initial="initial"
+                      animate="animate"
+                    >
+                      <p className="text-white/90 text-lg font-medium">
+                        Мы приглашаем вас присоединиться к нашей команде в качестве вахтового рабочего.
+                        Это отличная возможность для тех, кто ищет стабильную работу с достойной оплатой и
+                        комфортными условиями.
+                      </p>
+                      <h2 className="text-3xl font-bold mt-3">
+                        {vacancy.title}
+                      </h2>
+                    </motion.div>
+                  </div>
+                </div>
+              </div>
+
+              {/* Основной контент */}
+              <motion.div
+                className="relative z-20 px-6 pb-12 bg-white -mt-6 rounded-t-3xl pt-10"
+                variants={contentVariants}
+                initial="initial"
+                animate="animate"
+              >
+                <div className="max-w-6xl mx-auto">
+                  <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+                    {/* Левая колонка - Описание вакансии */}
+                    <motion.div
+                      className="lg:col-span-2 space-y-6"
+                    >
+                      <div className="space-y-6">
+                        <div>
+                          <p className="text-lg text-gray-600 font-medium mb-1">{vacancy.company}</p>
+                        </div>
+
+                        <div className="flex flex-wrap gap-3">
+                          <div className="flex items-center gap-2 bg-red-50 text-red-700 px-4 py-2 rounded-full">
+                            <MapPin className="h-5 w-5" />
+                            <span className="font-medium">{vacancy.location}</span>
+                          </div>
+                          <div className="flex items-center gap-2 bg-blue-50 text-blue-700 px-4 py-2 rounded-full">
+                            <span className="font-medium">{formatSalary(vacancy.salary)}</span>
+                          </div>
+                          <div className="flex items-center gap-2 bg-green-50 text-green-700 px-4 py-2 rounded-full">
+                            <Briefcase className="h-5 w-5" />
+                            <span className="font-medium">{vacancy.employment_type}</span>
+                          </div>
+                          <div className="flex items-center gap-2 bg-purple-50 text-purple-700 px-4 py-2 rounded-full">
+                            <Clock className="h-5 w-5" />
+                            <span className="font-medium">{vacancy.experience}</span>
+                          </div>
+                        </div>
+
+                        <div className="prose max-w-none">
+                          <h3 className="text-2xl font-bold mb-4 text-gray-900">Описание вакансии</h3>
+                          <div className="text-gray-700 whitespace-pre-wrap leading-relaxed">
+                            {vacancy.description}
+                          </div>
+                        </div>
+
+                        {vacancy.requirements && (
+                          <div className="prose max-w-none">
+                            <h3 className="text-2xl font-bold mb-4 text-gray-900">Требования</h3>
+                            <div className="text-gray-700 whitespace-pre-wrap leading-relaxed">
+                              {vacancy.requirements}
+                            </div>
+                          </div>
+                        )}
+
+                        {vacancy.benefits && (
+                          <div className="prose max-w-none">
+                            <h3 className="text-2xl font-bold mb-4 text-gray-900">Мы предлагаем</h3>
+                            <div className="text-gray-700 whitespace-pre-wrap leading-relaxed">
+                              {vacancy.benefits}
+                            </div>
+                          </div>
+                        )}
+                      </div>
+                    </motion.div>
+
+                    {/* Правая колонка - Преимущества и форма */}
+                    <motion.div className="space-y-6">
+                      <div className="bg-gradient-to-br from-blue-50 to-blue-100 rounded-2xl p-6 border border-blue-200">
+                        <div className="flex items-center gap-3 mb-4">
+                          <div className="p-2 bg-blue-200 rounded-full">
+                            <Gift className="h-6 w-6 text-blue-700" />
+                          </div>
+                          <h3 className="text-xl font-bold text-blue-900">Преимущества</h3>
+                        </div>
+                        <div className="space-y-3">
+                          <div className="flex items-center gap-2 text-blue-800">
+                            <Badge variant="secondary" className="bg-white/70 text-blue-700">
+                              Бесплатное проживание
+                            </Badge>
+                          </div>
+                          <div className="flex items-center gap-2 text-blue-800">
+                            <Badge variant="secondary" className="bg-white/70 text-blue-700">
+                              Компенсация проезда
+                            </Badge>
+                          </div>
+                          <div className="flex items-center gap-2 text-blue-800">
+                            <Badge variant="secondary" className="bg-white/70 text-blue-700">
+                              Организованное питание
+                            </Badge>
+                          </div>
+                          <div className="flex items-center gap-2 text-blue-800">
+                            <Badge variant="secondary" className="bg-white/70 text-blue-700">
+                              Предоставление спецодежды
+                            </Badge>
+                          </div>
+                          <div className="flex items-center gap-2 text-blue-800">
+                            <Badge variant="secondary" className="bg-white/70 text-blue-700">
+                              Стабильная зарплата без задержек
+                            </Badge>
+                          </div>
+                          <div className="flex items-center gap-2 text-blue-800">
+                            <Badge variant="secondary" className="bg-white/70 text-blue-700">
+                              Официальное трудоустройство
+                            </Badge>
+                          </div>
+                        </div>
+                      </div>
+
+                      <div className="bg-gray-50 rounded-2xl p-6 border border-gray-200">
+                        <h3 className="text-lg font-semibold mb-4 text-gray-900">Информация о вакансии</h3>
+                        <div className="space-y-3 text-sm">
+                          <div className="flex items-center justify-between">
+                            <span className="text-gray-600">Опубликовано:</span>
+                            <span className="font-medium text-gray-900">
+                              {formatCreatedDate(vacancy.created_at)}
+                            </span>
+                          </div>
+                          <div className="flex items-center justify-between">
+                            <span className="text-gray-600">ID вакансии:</span>
+                            <span className="font-medium text-gray-900">{vacancy.id}</span>
+                          </div>
+                        </div>
+                      </div>
+
+                      {/* Форма отклика */}
+                      <motion.div
+                        initial={{ opacity: 0, y: 20 }}
+                        animate={{ 
+                          opacity: showApplicationForm ? 1 : 0,
+                          y: showApplicationForm ? 0 : 20,
+                          height: showApplicationForm ? "auto" : 0
+                        }}
+                        transition={{ duration: 0.3 }}
+                        className="overflow-hidden"
+                      >
+                        <div className="bg-white rounded-2xl border border-gray-200 shadow-sm">
+                          <ApplicationForm 
+                            vacancyId={vacancy.id} 
+                            vacancyTitle={vacancy.title}
+                            onClose={() => setShowApplicationForm(false)}
+                          />
+                        </div>
+                      </motion.div>
+                    </motion.div>
+                  </div>
+                </div>
+              </motion.div>
+            </div>
+          </motion.div>
+        </motion.div>
+      )}
+    </AnimatePresence>
+  );
+}

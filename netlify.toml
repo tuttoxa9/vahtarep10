@@ -1,0 +1,50 @@
+[build]
+  command = "bun run build"
+  publish = ".next"
+
+[build.environment]
+  NODE_VERSION = "18"
+  NEXT_TELEMETRY_DISABLED = "1"
+  NPM_FLAGS = "--production=false"
+  # Real Firebase configuration values
+  NEXT_PUBLIC_FIREBASE_API_KEY = "AIzaSyAvdGVXFzqU-DrAi3Sw223qyscDuYjKbG0"
+  NEXT_PUBLIC_FIREBASE_PROJECT_ID = "vahta1-76378"
+  NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN = "vahta1-76378.firebaseapp.com"
+  NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET = "vahta1-76378.firebasestorage.app"
+  NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID = "1037943763154"
+  NEXT_PUBLIC_FIREBASE_APP_ID = "1:1037943763154:web:0e2a2dffc1de4d7279bd0b"
+  NEXT_PUBLIC_FIREBASE_MEASUREMENT_ID = "G-DVYZFE1PN7"
+
+[[plugins]]
+  package = "@netlify/plugin-nextjs"
+
+[functions]
+  directory = "netlify/functions"
+
+[functions."submit-application"]
+  timeout = 10
+
+[functions."submit-application-simple"]
+  timeout = 8
+
+[functions."submit-application-fixed"]
+  timeout = 10
+
+[functions."submit-employer-application"]
+  timeout = 10
+
+[[redirects]]
+  from = "/api/*"
+  to = "/.netlify/functions/:splat"
+  status = 200
+
+# Простое кэширование статических ресурсов
+[[headers]]
+  for = "/_next/static/*"
+  [headers.values]
+    Cache-Control = "public, max-age=31536000, immutable"
+
+[[headers]]
+  for = "/images/*"
+  [headers.values]
+    Cache-Control = "public, max-age=86400"
