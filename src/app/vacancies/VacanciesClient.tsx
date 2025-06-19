@@ -28,6 +28,7 @@ function VacancyListItem({
     experience,
     employment_type,
     description,
+    paymentPeriodDays,
   } = vacancy;
 
   // Очищаем описание от стандартного текста
@@ -56,19 +57,19 @@ function VacancyListItem({
       initial="hidden"
       animate="visible"
       whileHover={{ y: -2, boxShadow: "0 8px 25px rgba(0, 0, 0, 0.1)" }}
-      className="bg-white rounded-xl p-10 border border-border/30 shadow-[0_2px_8px_rgba(60,60,120,0.08)] hover:shadow-[0_8px_25px_rgba(60,60,120,0.15)] transition-all duration-300 cursor-pointer w-full"
+      className="bg-white rounded-xl p-6 border border-border/30 shadow-[0_2px_8px_rgba(60,60,120,0.08)] hover:shadow-[0_8px_25px_rgba(60,60,120,0.15)] transition-all duration-300 cursor-pointer w-full"
       onClick={() => onClick(vacancy)}
     >
-      <div className="flex flex-col sm:flex-row gap-8">
+      <div className="flex flex-col sm:flex-row gap-6">
         {/* Место для картинки слева - увеличенное квадратное место */}
-        <div className="flex-shrink-0 w-28 h-28 sm:w-32 sm:h-32 bg-gradient-to-br from-red-100 to-red-200 rounded-xl flex items-center justify-center mx-auto sm:mx-0 border-2 border-red-200/50">
-          <Briefcase className="w-14 h-14 sm:w-16 sm:h-16 text-red-600/70" />
+        <div className="flex-shrink-0 w-24 h-24 sm:w-28 sm:h-28 bg-gradient-to-br from-red-100 to-red-200 rounded-xl flex items-center justify-center mx-auto sm:mx-0 border-2 border-red-200/50">
+          <Briefcase className="w-12 h-12 sm:w-14 sm:h-14 text-red-600/70" />
         </div>
 
         {/* Основная информация */}
         <div className="flex-1 min-w-0">
-          <div className="flex flex-col sm:flex-row sm:justify-between sm:items-start mb-6 text-center sm:text-left">
-            <div className="flex-1 min-w-0 sm:pr-8 mb-4 sm:mb-0">
+          <div className="flex flex-col sm:flex-row sm:justify-between sm:items-start mb-4 text-center sm:text-left">
+            <div className="flex-1 min-w-0 sm:pr-6 mb-3 sm:mb-0">
               <h3 className="text-xl sm:text-2xl font-bold text-foreground mb-2 leading-tight">
                 {title}
               </h3>
@@ -81,6 +82,11 @@ function VacancyListItem({
               <div className="text-xl sm:text-2xl font-bold text-primary mb-2">
                 {formatSalary(salary)}
               </div>
+              {paymentPeriodDays && (
+                <div className="text-sm text-muted-foreground mb-2">
+                  За {paymentPeriodDays} {paymentPeriodDays === 1 ? 'день' : paymentPeriodDays <= 4 ? 'дня' : 'дней'}
+                </div>
+              )}
               <div className={`inline-block rounded-full px-4 py-2 text-sm font-semibold ${
                 employment_type && (employment_type.toLowerCase().includes('вахтовым методом') || employment_type.toLowerCase().includes('вахтовый метод'))
                   ? 'bg-red-500/10 text-red-600 border border-red-500/20'
@@ -92,7 +98,7 @@ function VacancyListItem({
           </div>
 
           {/* Детали вакансии */}
-          <div className="flex flex-wrap gap-8 mb-6 text-lg text-muted-foreground">
+          <div className="flex flex-wrap gap-6 mb-4 text-lg text-muted-foreground">
             <div className="flex items-center gap-3">
               <MapPin className="w-6 h-6" />
               <span>{location}</span>
@@ -105,7 +111,7 @@ function VacancyListItem({
 
           {/* Краткое описание */}
           {cleanDescription && (
-            <p className="text-lg text-muted-foreground line-clamp-2 leading-relaxed mb-8">
+            <p className="text-lg text-muted-foreground line-clamp-2 leading-relaxed mb-6">
               {cleanDescription.substring(0, 300)}...
             </p>
           )}
@@ -177,7 +183,7 @@ export default function VacanciesClient({ vacancies }: { vacancies: FirestoreVac
         {/* Список вакансий справа - максимально используем оставшееся место */}
         <div className="flex-1 min-w-0">
           <motion.div
-            className="space-y-8"
+            className="space-y-6"
             variants={containerVariants}
             initial="hidden"
             animate="visible"
