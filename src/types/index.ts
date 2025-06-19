@@ -58,6 +58,7 @@ export interface FirestoreVacancy {
   createdAt: FirebaseTimestamp;
   detailsUrl?: string; // Ссылка для кнопки "Узнать подробнее"
   isFeatured?: boolean; // Особенная вакансия с выделением
+  paymentPeriodDays?: number; // Количество дней для периода оплаты
 }
 
 export interface Review {

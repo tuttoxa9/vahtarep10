@@ -164,7 +164,7 @@ body {
       #e5e7eb 75%,
       #f3f4f6 85%,
       #f9fafb 92%,
-      #ffffff 100%);
+      hsl(var(--background)) 100%);
     z-index: -1;
   }
 

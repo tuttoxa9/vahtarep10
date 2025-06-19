@@ -18,11 +18,12 @@ export default function VacancyCard({ vacancy, index = 0 }: VacancyCardProps) {
     salary,
     experience,
     employment_type,
+    paymentPeriodDays,
   } = vacancy;
 
   return (
     <div
-      className="card-depth rounded-xl p-4 border border-border/30 bg-white/90 backdrop-blur-md shadow-[0_2px_8px_rgba(60,60,120,0.10),0_1px_3px_rgba(0,0,0,0.06)] transition-all duration-300 hover:shadow-lg hover:-translate-y-1"
+      className="card-depth rounded-xl p-3 border border-border/30 bg-white/90 backdrop-blur-md shadow-[0_2px_8px_rgba(60,60,120,0.10),0_1px_3px_rgba(0,0,0,0.06)] transition-all duration-300 hover:shadow-lg hover:-translate-y-1"
     >
       <Link
         href={`/vacancies/${id}`}
@@ -46,7 +47,7 @@ export default function VacancyCard({ vacancy, index = 0 }: VacancyCardProps) {
           </div>
         </div>
 
-        <div className="space-y-2 flex-1 mb-3">
+        <div className="space-y-1.5 flex-1 mb-2">
           <div className="flex items-center text-sm">
             <span className="text-muted-foreground mr-2 font-medium">Локация:</span>
             <span className="text-foreground/80">{location}</span>
@@ -59,10 +60,17 @@ export default function VacancyCard({ vacancy, index = 0 }: VacancyCardProps) {
         </div>
 
         <div className="flex justify-between items-center mt-auto pt-2 border-t border-border/30">
-          <div className="text-xl font-bold text-primary drop-shadow-sm">
-            {formatSalary(salary)}
+          <div className="flex flex-col">
+            <div className="text-xl font-bold text-primary drop-shadow-sm">
+              {formatSalary(salary)}
+            </div>
+            {paymentPeriodDays && (
+              <div className="text-xs text-muted-foreground mt-0.5">
+                За {paymentPeriodDays} {paymentPeriodDays === 1 ? 'день' : paymentPeriodDays <= 4 ? 'дня' : 'дней'}
+              </div>
+            )}
           </div>
-          <div className="btn-depth rounded-lg bg-primary hover:bg-primary/90 text-white px-4 py-2 text-sm font-medium transition-all shadow-lg shadow-primary/20">
+          <div className="btn-depth rounded-lg bg-primary hover:bg-primary/90 text-white px-3 py-1.5 text-xs font-medium transition-all shadow-lg shadow-primary/20">
             Подробнее
           </div>
         </div>
