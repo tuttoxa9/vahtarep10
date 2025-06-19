@@ -50,7 +50,7 @@ export default async function VacanciesPage() {
   return (
     <PageLayout>
       <div className="container-custom py-16 md:py-20">
-        <div className="w-full max-w-7xl mr-auto ml-4 lg:ml-8">
+        <div className="w-full max-w-7xl mx-auto">
           <div className="mb-12 text-over-background">
             <AnimatedHeading
               as="h1"
@@ -62,7 +62,7 @@ export default async function VacanciesPage() {
             </AnimatedHeading>
 
             <AnimatedSection type="fade" delay={0.2}>
-              <p className="text-lg text-muted-foreground max-w-2xl">
+              <p className="text-lg text-muted-foreground max-w-2xl hidden md:block">
                 Мы собрали лучшие предложения для работы вахтовым методом. Выберите подходящую
                 вакансию, откликнитесь и начните свою карьеру уже сегодня.
               </p>

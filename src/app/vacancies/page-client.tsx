@@ -59,7 +59,7 @@ export default function ClientVacanciesPage() {
             </AnimatedHeading>
 
             <AnimatedSection type="fade" delay={0.2}>
-              <p className="text-lg text-muted-foreground max-w-2xl">
+              <p className="text-lg text-muted-foreground max-w-2xl hidden md:block">
                 Мы собрали лучшие предложения для работы вахтовым методом. Выберите подходящую
                 вакансию, откликнитесь и начните свою карьеру уже сегодня. Данные обновляются при каждой загрузке страницы.
               </p>
