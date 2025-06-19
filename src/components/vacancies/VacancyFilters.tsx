@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { Search, SlidersHorizontal, X } from "lucide-react";
+import { Search, SlidersHorizontal, X, ChevronDown, ChevronUp } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
@@ -73,6 +73,8 @@ export default function VacancyFilters({ onFiltersChange, resultsCount }: Vacanc
     sortBy: "date",
   });
 
+  const [isExpanded, setIsExpanded] = useState(false);
+
   useEffect(() => {
     onFiltersChange(filters);
   }, [filters, onFiltersChange]);
@@ -104,29 +106,49 @@ export default function VacancyFilters({ onFiltersChange, resultsCount }: Vacanc
   };
 
   return (
-    <Card className="p-6 bg-white border-border/30 shadow-lg sticky-sidebar">
+    <Card className="p-4 sm:p-6 bg-white border-border/30 shadow-lg sticky-sidebar">
       {/* Заголовок и результаты */}
-      <div className="mb-6">
+      <div className="mb-4 sm:mb-6">
         <div className="flex items-center justify-between mb-2">
-          <h3 className="text-lg font-semibold">Фильтры</h3>
-          {hasActiveFilters && (
+          <div className="flex items-center gap-2">
+            <h3 className="text-base sm:text-lg font-semibold">Фильтры</h3>
+            {hasActiveFilters && (
+              <Badge variant="secondary" className="text-xs lg:hidden">
+                {getActiveFiltersCount()}
+              </Badge>
+            )}
+          </div>
+          <div className="flex items-center gap-2">
+            {hasActiveFilters && (
+              <Button
+                variant="ghost"
+                size="sm"
+                onClick={clearFilters}
+                className="text-muted-foreground hover:text-foreground p-1 hidden sm:flex"
+              >
+                <X className="h-4 w-4" />
+              </Button>
+            )}
             <Button
               variant="ghost"
               size="sm"
-              onClick={clearFilters}
-              className="text-muted-foreground hover:text-foreground p-1"
+              onClick={() => setIsExpanded(!isExpanded)}
+              className="lg:hidden flex items-center gap-1 text-muted-foreground hover:text-foreground p-1"
             >
-              <X className="h-4 w-4" />
+              <SlidersHorizontal className="h-4 w-4" />
+              {isExpanded ? <ChevronUp className="h-4 w-4" /> : <ChevronDown className="h-4 w-4" />}
             </Button>
-          )}
+          </div>
         </div>
-        <div className="text-sm text-muted-foreground">
+        <div className="text-xs sm:text-sm text-muted-foreground">
           Найдено: <span className="font-medium text-foreground">{resultsCount}</span>
         </div>
       </div>
 
-      {/* Поиск */}
-      <div className="mb-6">
+      {/* Фильтры контент - скрываемый на мобильных */}
+      <div className={`${isExpanded ? 'block' : 'hidden'} lg:block`}>
+        {/* Поиск */}
+        <div className="mb-4 sm:mb-6">
         <label className="text-sm font-medium text-foreground mb-2 block">
           Поиск
         </label>
@@ -139,10 +161,10 @@ export default function VacancyFilters({ onFiltersChange, resultsCount }: Vacanc
             className="pl-10 border-border/50 focus:border-primary"
           />
         </div>
-      </div>
+        </div>
 
-      {/* Зарплата */}
-      <div className="mb-6">
+        {/* Зарплата */}
+        <div className="mb-4 sm:mb-6">
         <label className="text-sm font-medium text-foreground mb-3 block">
           Зарплата (₽)
         </label>
@@ -162,10 +184,10 @@ export default function VacancyFilters({ onFiltersChange, resultsCount }: Vacanc
             className="border-border/50 focus:border-primary text-sm"
           />
         </div>
-      </div>
+        </div>
 
-      {/* Город/Регион */}
-      <div className="mb-6">
+        {/* Город/Регион */}
+        <div className="mb-4 sm:mb-6">
         <label className="text-sm font-medium text-foreground mb-3 block">
           Город/Регион
         </label>
@@ -195,10 +217,10 @@ export default function VacancyFilters({ onFiltersChange, resultsCount }: Vacanc
             ))}
           </div>
         </div>
-      </div>
+        </div>
 
-      {/* Тип занятости */}
-      <div className="mb-6">
+        {/* Тип занятости */}
+        <div className="mb-4 sm:mb-6">
         <label className="text-sm font-medium text-foreground mb-3 block">
           Тип занятости
         </label>
@@ -217,10 +239,10 @@ export default function VacancyFilters({ onFiltersChange, resultsCount }: Vacanc
             ))}
           </SelectContent>
         </Select>
-      </div>
+        </div>
 
-      {/* Опыт работы */}
-      <div className="mb-6">
+        {/* Опыт работы */}
+        <div className="mb-4 sm:mb-6">
         <label className="text-sm font-medium text-foreground mb-3 block">
           Опыт работы
         </label>
@@ -239,10 +261,10 @@ export default function VacancyFilters({ onFiltersChange, resultsCount }: Vacanc
             ))}
           </SelectContent>
         </Select>
-      </div>
+        </div>
 
-      {/* Сортировка */}
-      <div className="mb-4">
+        {/* Сортировка */}
+        <div className="mb-4">
         <label className="text-sm font-medium text-foreground mb-3 block">
           Сортировка
         </label>
@@ -261,27 +283,28 @@ export default function VacancyFilters({ onFiltersChange, resultsCount }: Vacanc
             ))}
           </SelectContent>
         </Select>
-      </div>
-
-      {/* Активные фильтры */}
-      {hasActiveFilters && (
-        <div className="pt-4 border-t border-border/30">
-          <div className="flex items-center justify-between mb-2">
-            <span className="text-sm font-medium">Активные фильтры:</span>
-            <Badge variant="secondary" className="text-xs">
-              {getActiveFiltersCount()}
-            </Badge>
-          </div>
-          <Button
-            variant="outline"
-            size="sm"
-            onClick={clearFilters}
-            className="w-full text-sm"
-          >
-            Очистить все
-          </Button>
         </div>
-      )}
+
+        {/* Активные фильтры */}
+        {hasActiveFilters && (
+          <div className="pt-4 border-t border-border/30">
+            <div className="flex items-center justify-between mb-2">
+              <span className="text-sm font-medium">Активные фильтры:</span>
+              <Badge variant="secondary" className="text-xs hidden sm:block">
+                {getActiveFiltersCount()}
+              </Badge>
+            </div>
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={clearFilters}
+              className="w-full text-sm"
+            >
+              Очистить все
+            </Button>
+          </div>
+        )}
+      </div>
     </Card>
   );
 }
